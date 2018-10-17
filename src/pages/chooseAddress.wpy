@@ -1,0 +1,117 @@
+<style lang="less">
+  page{font-size:30rpx;padding-bottom:110rpx;}
+  .address_list{background:#F0F0F0;}
+  .address_item{margin-bottom:20rpx;background:#fff;}
+  .personal_info{border-bottom:2rpx solid #F0F0F0;padding:0 16rpx 0 40rpx;}
+
+  .disabled{color:#e0e0e0;}
+  .disabled .tip{padding:12rpx 0;border-bottom:2rpx solid #f0f0f0;}
+  .disabled .tip text{display:inline-block;width:14rpx;height:36rpx;background:#e0e0e0;vertical-align:middle;margin-top:-6rpx;margin-right:2rpx;}
+
+  .personal_info .name{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-justify-content:space-between;justify-content:space-between;width:650rpx;line-height:68rpx;font-size:32rpx;padding-top:10rpx;}
+  .personal_info .address{line-height:40rpx;margin-bottom:16rpx;}
+
+  .operate{text-align:right;padding:18rpx 30rpx;}
+  .operate navigator{display:inline-block;color:#878787;}
+  .operate image{width:37rpx;height:37rpx;margin-top:-8rpx;margin-right:16rpx;}
+
+  .add{position:fixed;left:0;bottom:0;width:750rpx;background:#fff;}
+  .add navigator{width:700rpx;height:80rpx;border-radius:8rpx;background:#CF1B2F;color:#fff;font-size:34rpx;line-height:80rpx;text-align:center;margin-left:25rpx;margin-bottom:25rpx;}
+
+  // 无收货地址
+  .no_address_list{text-align:center;}
+  .no_address_list image{width:260rpx;height:260rpx;margin-top:100rpx;margin-bottom:20rpx;}
+  .no_address_list view{color:#756E6E;line-height:50rpx;}
+</style>
+<template>
+  <view class='container'>
+    <view class='address_list' wx:if='{{have_address_list}}'>
+      <repeat for='{{address_list}}'>
+        <view class="address_item {{item.disabled?'disabled':''}}">
+          <view class='tip' style="display:{{item.disabled?'block':'none'}}">
+            <text></text>
+            超出配送范围
+          </view>
+
+          <view class='personal_info' @tap="{{item.disabled?'':'chooseChange'}}" data-id='{{item.id}}'>
+            <label data-disabled='{{item.disabled}}'>
+              <view class='name'>
+                <radio hidden disabled='{{item.disabled}}' checked='{{item.checked}}' value='{{item.id}}'></radio>
+                <view>{{item.name}}</view>
+                <view>{{item.phone}}</view>
+              </view>
+              <view class='address'>{{item.address}}{{item.address_details}}</view>
+            </label>
+
+          </view>
+
+          <view class='operate' style="display:{{item.disabled?'none':'block'}}">
+            <navigator url='modifyAddressUse?id={{item.id}}' class='edit'><image src='../img/u487.png'></image>编辑</navigator>
+          </view>
+        </view>
+      </repeat>
+    </view> 
+    <view class='no_address_list'  wx:if='{{!have_address_list}}'>
+      <image src='../img/141534826639_.pic.jpg'></image>
+      <view>暂无收货地址</view>
+    </view>
+    <view class='add'>
+      <navigator url='addAddressUse'>新增地址</navigator>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class chooseAddress extends wepy.page {
+    config = {
+      navigationBarTitleText: '选择收货地址',
+      navigationBarBackgroundColor: '#fff',
+      navigationBarTextStyle: 'black'
+    }
+    data = {
+      prescribed_scope: 100,
+      address_list: [],
+      have_address_list: false
+    }
+    methods = {
+      chooseChange (e) {
+        for (var i = 0; i < this.address_list.length; i++) {
+          if (e.currentTarget.dataset.id === this.address_list[i].id) {
+            this.$parent.globalData.receiveAddress = this.address_list[i]
+          }
+        }
+        wepy.navigateBack()
+      }
+    }
+    onShow () {
+      var arr = []
+      var jie
+      var index
+      if (this.$parent.globalData.address_list.length) {
+        this.address_list = this.$parent.globalData.address_list
+        this.have_address_list = true
+      } else {
+        this.address_list = this.$parent.globalData.address_list
+        this.have_address_list = false
+        this.$apply()
+      }
+      var num = this.address_list.length
+      for (var q = 0; q < num; q++) {
+        if (this.address_list[q].distance > this.prescribed_scope) {
+          this.address_list[q].disabled = true
+          jie = this.address_list[q]
+          this.address_list.push(jie)
+          arr.push(q)
+        } else {
+          this.address_list[q].disabled = false
+        }
+      }
+      for (var w = 0; w < arr.length; w++) {
+        index = arr[w]
+        this.address_list.splice(index - w, 1)
+      }
+    }
+  }
+</script>

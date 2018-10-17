@@ -1,0 +1,152 @@
+<style lang="less">
+page{padding-bottom:100rpx;}
+.searcher {padding:10px;}
+.searcher input {padding:8rpx 16rpx;background: white;font-size: 14px;color: #ccc;border-radius: 5px;text-align: center;background:#F4F4F4}
+.placeholder-class {color: #ccc;text-align: center;}
+.header {font-size:26rpx;padding:20rpx;color:#949494;padding-bottom:10rpx;}
+.current {padding:20rpx;display:flex;justify-content:space-between;align-items: center;font-size:30rpx;}
+.current view{color:#5B9ACB;font-size:28rpx;}
+.current image {width:40rpx;height:40rpx;margin-top:-4rpx;margin-right:2rpx;}
+.item {padding: 10px;display: flex;flex-direction: column;border-bottom: 1px solid #eee;}
+.item .title {width: 100%;font-size:34rpx;line-height: 30px;color: #333;}
+.item .address {width: 100%;font-size:28rpx;line-height:46rx;color: #666;}
+.grey_bar{width:750rpx;height:12rpx;background:#F4F3F4}
+.add{position:fixed;bottom:0;left:0;width:700rpx;height:90rpx;padding:0 25rpx;display: -webkit-box;display:-webkit-flex;display:flex;-webkit-justify-content:space-between;justify-content:space-between;-webkit-align-items:center;align-items:center;border-top:2rpx solid #E0E0E0;background:#fff;}
+.add view{color:#5B9ACB;font-size:30rpx;}
+.add text{width:20rpx;height:20rpx;border-top:4rpx solid rgb(180, 181, 182);border-right:4rpx solid rgb(180, 181, 182);display:inline-block;-webkit-transform:rotate(45deg);transform:rotate(45deg);}
+</style>
+<template>
+  <view class='container'>
+    <view class="searcher">
+      <input type="text" bindinput="keywordTyping" placeholder="请输入地址" placeholder-class="placeholder-class" />
+    </view>
+    <view class="header">当前地址</view>
+    <view class="current">
+      <text bindtap="geoTapped">{{address}}</text>
+      <view bindtap="reloadCurrent">
+        <image src="../img/geo.png" />重新定位
+      </view>
+    </view>
+    <view class='grey_bar'></view>
+    <view class="header">{{changeText}}地址</view>
+    <view class="list">
+      <view class="item" bindtap="addressTapped" data-result='{{result}}' data-index='{{index}}' data-address="{{item.title}}" wx:for='{{result}}' wx:key='{{item.title}}'>
+        <text class="title">{{item.title}}</text>
+        <text class="address">{{item.address}}</text>
+      </view>
+    </view>
+    <navigator url='addAddress'>
+      <view class='add'>
+        <view>新增地址</view>
+        <text></text>
+      </view>
+    </navigator>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import QQMapWX from '../libs/qqmap-wx-jssdk.min'
+  import WxNotificationCenter from '../libs/WxNotificationCenter'
+  var qqmapsdk
+  var addressSelected
+  var obj
+  
+  export default class search extends wepy.page {
+    config = {
+      navigationBarTitleText: '选择收货地址',
+      navigationBarBackgroundColor: '#fff',
+      navigationBarTextStyle: 'black'
+    }
+    data = {
+      address: '',
+      result: [],
+      changeText: '附近'
+    }
+    methods = {
+      reloadCurrent () {
+        var that = this
+        that.address = '正在定位中...'
+        qqmapsdk.reverseGeocoder({
+          poi_options: 'policy=2',
+          get_poi: 1,
+          success: function (res) {
+            console.log('reloadCurrent定位成功了')
+            that.address = res.result.formatted_addresses.recommend
+            that.result = res.result.pois
+            that.city = res.result.address_component.city
+            obj = {
+              address: res.result.formatted_addresses.recommend,
+              address_details: res.result.address,
+              lat: res.result.location.lat,
+              lng: res.result.location.lng
+            }
+            that.$apply()
+          }
+        })
+      },
+      keywordTyping: function (e) {
+        var that = this
+        var keyword = e.detail.value
+        qqmapsdk.getSuggestion({
+          keyword: keyword,
+          region: that.city,
+          success: function (res) {
+            that.changeText = '搜索'
+            that.result = res.data
+            that.$apply()
+          }
+        })
+      },
+      addressTapped: function (e) {
+        var base = e.currentTarget.dataset.result[e.currentTarget.dataset.index]
+        obj = {
+          address: base.title,
+          address_details: base.address,
+          lat: base.location.lat,
+          lng: base.location.lng
+        }
+        WxNotificationCenter.postNotificationName(addressSelected, obj)
+        wepy.navigateBack()
+      },
+      geoTapped: function () {
+        WxNotificationCenter.postNotificationName(addressSelected, obj)
+        wepy.navigateBack()
+      }
+    }
+
+    onLoad (options) {
+      if (options.type === '1') {
+        addressSelected = 'addressSelected1'
+      } else if (options.type === '2') {
+        addressSelected = 'addressSelected2'
+      } else if (options.type === '3') {
+        addressSelected = 'addressSelected3'
+      } else if (options.type === '4') {
+        addressSelected = 'addressSelected4'
+      }
+      var that = this
+      qqmapsdk = new QQMapWX({
+        key: '3EKBZ-CNBL6-UQIS6-M7FAE-YF6K6-BKFYA'
+      })
+      that.address = '正在定位中...'
+      qqmapsdk.reverseGeocoder({
+        poi_options: 'policy=2',
+        get_poi: 1,
+        success: function (res) {
+          that.changeText = '附近'
+          that.address = res.result.formatted_addresses.recommend
+          that.result = res.result.pois
+          that.city = res.result.address_component.city
+          obj = {
+            address: res.result.formatted_addresses.recommend,
+            address_details: res.result.address,
+            lat: res.result.location.lat,
+            lng: res.result.location.lng
+          }
+          that.$apply()
+        }
+      })
+    }
+  }
+</script>

@@ -1,0 +1,306 @@
+<style lang="less">
+  image{width:100%;height:100%}
+  page{font-size:30rpx;background:#fff;padding-bottom:160rpx;}
+  .person_info navigator{background:#fff;overflow: hidden;line-height:54rpx;font-size:28rpx;margin-top:10rpx;}
+  .person_info .buyer{margin-left: 110rpx;width:560rpx;line-height:70rpx;display: -webkit-box;display:-webkit-flex;display:flex;-webkit-justify-content:space-between;justify-content:space-between;}
+  .address{display: -webkit-box;display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;padding-bottom:12rpx;}
+  .person_info .icon_location{width:110rpx;-webkit-flex-shrink:0;flex-shrink:0;text-align:center;}
+  .person_info .icon_location image{width:48rpx;height:64rpx;}
+  .person_info .address_info{width:570rpx;-webkit-flex-shrink:0;flex-shrink:0;line-height:46rpx;}
+  .person_info .icon_arrow{width:20rpx;height:20rpx;border-top:4rpx solid rgb(180, 181, 182);border-right:4rpx solid rgb(180, 181, 182);display:inline-block;-webkit-transform:rotate(45deg);transform:rotate(45deg);margin-left:20rpx;}
+  .person_info .noaddress{font-size:38rpx;padding-left:50rpx;display: -webkit-box;display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;color:#535354;-webkit-justify-content:space-between;justify-content:space-between;padding-right:26rpx;height:120rpx;}
+
+  // 商品
+  .order_info navigator{background:#F6F6F6;overflow:hidden;padding:20rpx 0;position:relative;}
+  .left_image{width:240rpx;height:240rpx;float:left;margin-left:20rpx;}
+  .right_info{float:left;width:420rpx;margin-left:24rpx;font-size:30rpx;}
+  .sku{color:#8E8E8E;}
+  .price{position:absolute;bottom:30rpx;width:420rpx;color:#8E8E8E;display: -webkit-box;display:-webkit-flex;display:flex;-webkit-justify-content:space-between;justify-content:space-between;}
+  .price_con{color:#FF0001;font-size:30rpx;}
+  .buy_number,.message,.freight{-webkit-align-items:center;align-items:center;border-bottom:2rpx solid #E4E4E4;background:#fff;display: -webkit-box;display:-webkit-flex;display:flex;-webkit-justify-content:space-between;justify-content:space-between;padding:15rpx 0;font-size:30rpx;}
+  .buy_number_title,.message_title,.freight_title{margin-left:44rpx;}
+  .buy_number{padding:0;}
+
+  // 商品以下内容
+  .buy_number .number view{float:left;width:80rpx;height:80rpx;text-align:center;}
+  .buy_number .number view image{width:44rpx;height:44rpx;margin-top:18rpx;}
+  .buy_number .number text{float:left;font-size:32rpx;margin:18rpx 10rpx 0;color:#6A6A6A}
+  .message input{width:540rpx;margin-right:36rpx;}
+  .freight .freight_money{margin-right:40rpx;}
+  .total_price{background:#fff;display: -webkit-box;display:-webkit-flex;display:flex;-webkit-justify-content:space-between;justify-content:space-between;padding:15rpx 0;font-size:30rpx;}
+  .total_price_con{margin-right:36rpx;color:#FF3737;}
+  .fixed{position:fixed;bottom:0;left:0;width:750rpx;}
+  .fixed checkbox-group{overflow:hidden;margin-right:20rpx;line-height:70rpx;margin-bottom:10rpx;}
+  .fixed navigator{color:#1E9FFF;float:right;}
+  .fixed label{float:right;width:60rpx;height:60rpx;}
+  .fixed .label_icon{width:30rpx;height:30rpx;margin-top:-4rpx;vertical-align:middle;}
+  .bottom{overflow:hidden;clear:both;}
+  .bottom .left{width:470rpx;background:#eee;float:left;text-align:right;padding:4rpx 30rpx 4rpx 0;line-height:40rpx;}
+  .bottom .left .needpay{font-size:30rpx;}
+  .bottom .left .needpay_con{color:#FF3737;}
+  .bottom .left .needpay_number{font-size:26rpx;color:#6E6E6E;}
+  .bottom .submit{background:#C50001;width:250rpx;float:left;color:#fff;height:88rpx;line-height:88rpx;}
+</style>
+<template>
+  <view class="container">
+    <form bindsubmit='formSubmit'>
+      <view class="person_info">
+        <navigator url='chooseAddress' wx:if='{{have_address}}'>
+          <view class="buyer">
+            <view>收货人：{{person_info.name}}</view>
+            <view>{{person_info.phone}}</view>
+          </view>
+          <view class="address">
+            <view class="icon_location"><image src="../img/location.png" /></view>
+            <view class="address_info">
+              收货地址：{{person_info.address}}{{person_info.address_details}}
+            </view>
+            <view class="icon_arrow"></view>
+          </view>
+        </navigator>
+        <navigator url='chooseAddress' class='noaddress' wx:if='{{!have_address}}'>
+          <view>选择收货地址</view>
+          <view class="icon_arrow"></view>
+        </navigator>
+      </view>
+      <view class='order_info'>
+        <navigator url=''>
+          <view class='left_image'>
+            <image src='../img/1536119946389.jpg' />
+          </view>
+          <view class='right_info'>
+            <view class='name'>韩版宽松百搭夏季学生短袖T恤衫</view>
+            <view class='sku'>白色</view>
+            <view class='price'>
+              <view class='price_con'>{{good_integral}}积分+{{good_money}}元</view>
+              <view class='price_number'>X 1</view>
+            </view>
+          </view>
+        </navigator>
+      </view>
+      <view class='buy_number'>
+        <view class='buy_number_title'>购买数量</view>
+        <view class='number'>
+          <view @tap='subtract'>
+            <image src='../img/subtract_icon.png'></image>
+          </view>
+          <text>{{computed_number}}</text>
+          <input hidden name='number' value='{{computed_number}}'/>
+          <view @tap='add'>
+            <image src='../img/add_icon.png'></image>
+          </view>
+        </view>
+      </view>
+      <view class='message'>
+        <view class='message_title'>留言</view>
+        <input placeholder='选填：填写需要我们额外注意的信息' name='message'/>
+      </view>
+      <view class='freight'>
+        <view class='freight_title'>运费</view>
+        <view class='freight_money'>￥10</view>
+      </view>
+      <view class='total_price'>
+        <view></view>  
+        <view class='total_price_con'>合计：{{computed_integral}}积分+{{computed_money}}元</view>  
+      </view>
+      <view class='fixed'>
+        <checkbox-group name='agree' bindchange="checkboxChange">
+          <navigator>同意兑换协议</navigator>
+          <label>
+            <checkbox hidden checked="{{checked}}" value='1' />
+            <view class='label_icon'><image src="../img/{{checked?'select_choosed.png':'select.png'}}"></image></view>
+          </label>
+        </checkbox-group>
+        <view class='bottom'>
+          <view class='left'>
+            <view class='needpay'>应付：<text class='needpay_con'>{{computed_integral}}积分+{{computed_money}}元</text></view>
+            <view class='needpay_number'>共计1件商品</view>
+          </view>
+          <button form-type='submit' class='submit' style="background:{{integral_enough?'#C50001':'#C5C5C5'}}">{{submit_text}}</button>
+        </view>
+      </view>
+    </form>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  var that
+  var openid
+
+  export default class confirmOrderReal extends wepy.page {
+    config = {
+      navigationBarTitleText: '确认订单',
+      navigationBarBackgroundColor: '#fff',
+      navigationBarTextStyle: 'black'
+    }
+
+    data = {
+      have_address: false,
+      person_info: {},
+      stock_number: 10,
+      good_integral: 500,
+      good_money: 36,
+      myintegral: 2500,
+      computed_integral: 500,
+      computed_money: 36,
+      computed_number: 1,
+      integral_enough: true,
+      submit_text: '提交订单',
+      checked: true
+    }
+
+    methods = {
+      subtract () {
+        if (this.computed_number > 1) {
+          this.computed_number--
+          this.compute()
+        }
+      },
+      add () {
+        this.computed_number++
+        this.compute()
+      },
+      formSubmit (e) {
+        if (!this.integral_enough) {
+          return false
+        }
+        if (!this.person_info.name) {
+          wepy.showToast({
+            title: '请选择收货地址',
+            icon: 'none'
+          })
+          return false
+        }
+        if (!e.detail.value.agree[0]) {
+          wepy.showToast({
+            title: '请同意兑换协议',
+            icon: 'none',
+            duration: 2000
+          })
+          return false
+        }
+        // this.generateOrder()
+        this.pay()
+      },
+      checkboxChange (e) {
+        if (e.detail.value[0]) {
+          this.checked = true
+        } else {
+          this.checked = false
+        }
+      }
+    }
+
+    /* 生成商户订单 */
+    generateOrder () {
+      // 统一支付
+      wepy.request({
+        url: '后台路径',
+        method: 'GET',
+        data: {
+          gfee: '商品价钱',
+          gname: '商品名称',
+          openId: openid    // （商品价钱和商品名称根据自身需要是否传值,openid为必传）
+        },
+        success: function (res) {
+          var pay = res.data
+          // 发起支付
+          var timeStamp = pay[0].timeStamp
+          var packages = pay[0].package
+          var paySign = pay[0].paySign
+          var nonceStr = pay[0].nonceStr
+          var param = { 'timeStamp': timeStamp, 'package': packages, 'paySign': paySign, 'signType': 'MD5', 'nonceStr': nonceStr }
+          that.pay(param)
+        }
+      })
+    }
+  
+    /* 支付  */
+    pay () {
+      console.log('支付')
+      wepy.requestPayment({
+        timeStamp: '',
+        nonceStr: '',
+        package: '',
+        signType: '',
+        paySign: '',
+        success: function (res) {
+          console.log(res)
+          console.log('发起微信支付成功')
+          wepy.navigateBack({
+            delta: 1,
+            success: function (res) {
+              wepy.showToast({
+                title: '支付成功',
+                icon: 'success',
+                duration: 2000
+              })
+              wepy.redirectTo({
+                url: 'paySuccess'
+              })
+            },
+            fail: function () {
+              console.log('支付fail')
+              wepy.redirectTo({
+                url: 'paySuccessReal'
+              })
+            }
+          })
+        },
+        fail: function (res) {
+          wepy.showToast({
+            title: '吊起微信支付失败',
+            icon: 'none'
+          })
+          setTimeout(function () {
+            wepy.redirectTo({
+              url: 'orderDetailsRealtopay'
+            }, 1000)
+          })
+        }
+      })
+    }
+
+    compute () {
+      this.computed_integral = this.good_integral * this.computed_number
+      this.computed_money = this.good_money * this.computed_number
+      if (this.computed_integral > this.myintegral) {
+        this.integral_enough = false
+        this.submit_text = '积分不足'
+      } else {
+        this.integral_enough = true
+        this.submit_text = '提交订单'
+      }
+      if (this.computed_number > this.stock_number) {
+        this.integral_enough = false
+        this.submit_text = '库存不足'
+      } else if (this.computed_number >= this.stock_number && this.computed_integral <= this.myintegral) {
+        this.integral_enough = true
+        this.submit_text = '提交订单'
+      }
+    }
+
+    onLoad() {
+      that = this
+      openid = wepy.getStorageSync('openid')
+      if (wepy.getStorageSync('phone')) {
+        this.getPhoneNumber = true
+      }
+      for (var i = 0; i < this.$parent.globalData.address_list.length; i++) {
+        if (this.$parent.globalData.address_list[i].checked) {
+          if (this.$parent.globalData.address_list[i].distance < this.$parent.globalData.prescribed_scope) {
+            this.have_address = true
+            this.person_info = this.$parent.globalData.address_list[i]
+          }
+        }
+      }
+    }
+    onShow () {
+      if (this.$parent.globalData.receiveAddress.address) {
+        this.have_address = true
+        this.person_info = this.$parent.globalData.receiveAddress
+      }
+    }
+  }
+</script>

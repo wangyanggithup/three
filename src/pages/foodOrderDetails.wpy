@@ -1,0 +1,185 @@
+<style lang="less">
+  image{width:100%;height:100%}
+  page{font-size:30rpx;background-color:#EBEBEB;}
+  .top_state{background: -webkit-linear-gradient(left, #FF8502 , #FF4701); 
+            background: -o-linear-gradient(right, #FF8502, #FF4701);
+            background: -moz-linear-gradient(right, #FF8502, #FF4701); 
+            background: linear-gradient(to right, #FF8502 , #FF4701);
+            line-height:80rpx;padding-top:10rpx;padding-left:34rpx;font-size:32rpx;color:#fff;}
+  .person_info{background:#fff;overflow: hidden;line-height:54rpx;font-size:26rpx;background:#fff;display: -webkit-box;display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;padding:20rpx 0;}
+  .person_info .icon_location{width:66rpx;-webkit-flex-shrink:0;flex-shrink:0;text-align:center;}
+  .person_info .icon_location image{width:30rpx;height:38rpx;}
+  .person_info .address{width:650rpx;line-height:40rpx;color:#8D8D8D}
+  .person_info .address text{margin-right:30rpx;}
+  .store{line-height:70rpx;background:#fff;font-size:32rpx;padding-left:32rpx;margin-top:10rpx;}
+  .store image{width:16rpx;height:26rpx;margin-top:-6rpx;}
+  .order_list{background:#fff;overflow:hidden;}
+  .order_info{overflow:hidden;padding:12rpx 0 12rpx 12rpx;background:#EBEBEB;margin-bottom:14rpx;}
+  .left_image{width:148rpx;height:148rpx;float:left;}
+  .right_info{float:left;width:520rpx;height:148rpx;margin-left:30rpx;font-size:30rpx;}
+  .right_info .name{margin-top:10rpx;height:90rpx;}
+  .right_info .name,.right_info .sku{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-justify-content:space-between;justify-content:space-between;}
+  .right_info .name .title{overflow:hidden;text-overflow:ellipsis;margin-bottom:6rpx;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
+  .right_info .num{-webkit-flex-shrink:0;flex-shrink:0;margin-left:20rpx;}
+  .right_info .sku{color:#8E8E8E;margin-top:10rpx;font-size:26rpx;}
+  .right_info .sku .title{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+
+  .other_item{-webkit-align-items:center;align-items:center;background:#fff;display:-webkit-box;display:-webkit-flex;display:flex;-webkit-justify-content:space-between;justify-content:space-between;padding:10rpx 50rpx 10rpx 26rpx;font-size:30rpx;color:#545454;}
+  .other_item .title{-webkit-flex-shrink:0;flex-shrink:0;margin-right:50rpx;}
+  .other_item .discount{color:#FF3737;}
+  .message{padding-bottom:20rpx;}
+  .fact_pay{background:#EBEBEB;}
+  .fact_pay .red{color:#FF3737;}
+  .fact_pay .red text{font-size:40rpx;}
+  .distribution_mode{padding-top:20rpx;}
+  .distribution_mode text{color:#8D8D8D;}
+  .contact{position:relative;margin-bottom:12rpx;padding-right:80rpx;padding-bottom:20rpx;}
+  .contact text{color:#8D8D8D;}
+  .contact image{position:absolute;right:50rpx;top:18rpx;width:14rpx;height:25rpx;}
+  .contact button{position:absolute;left:0;top:0;width:100%;height:100%;opacity:0;}
+  .order_number{padding-top:20rpx;}
+  .order_time{padding-bottom:20rpx;}
+</style>
+<template>
+  <view class="container">
+    <view class='top_state'>商家已接单</view>
+    <view class="person_info">
+      <view class="icon_location"><image src="../img/location.png" /></view> 
+      <view class="address">
+        <view class="buyer">
+          <text>王天赐</text>
+          <text>123456789</text>
+        </view>
+        <view class="address_info">
+          收货地址：河北省石家庄市裕华区裕兴街道天海誉天下C区20号楼2单元1201室
+        </view>
+      </view>
+    </view>
+    <view class='store'>
+      <navigator url=''>美食美味（新百店）<image src='../img/right_arrow.png'></image></navigator>
+    </view>
+    <view class='order_list'>
+      <repeat for='{{order_list}}'>
+        <view class='order_info'>
+          <view class='left_image'>
+            <image src='{{item.src}}' />
+          </view>
+          <view class='right_info'>
+            <view class='name'>
+              <view class='title'>{{item.name}}</view>
+              <view class='num'>¥120</view>
+            </view>
+            <view class='sku'>
+              <view class='title'>颜色：白色</view>
+              <view class='num'>X2</view>
+            </view>
+          </view>
+        </view>
+      </repeat>
+    </view>
+
+    <view class='discount other_item'>
+      <view class='title'>餐盒费</view>
+      <view>¥6</view>
+    </view>
+    <view class='lunchbox_money other_item'>
+      <view class='title'>配送费</view>
+      <view>￥10</view>
+    </view>
+    <view class='freight other_item'>
+      <view class='title'>优惠</view>
+      <view class='discount'>-￥10</view>
+    </view>
+    <view class='message other_item'>
+      <view class='title'>留言</view>
+      <view>{{message}}</view>
+    </view>
+    <view class='fact_pay other_item'>
+      <view></view>
+      <view>实付<text class='red'>¥<text>{{fact_pay}}</text></text></view>
+    </view>
+    <view class='distribution_mode other_item'>
+      <view class='title'>配送方式</view>
+      <text>蜂鸟配送</text>
+    </view>
+    <view class='contact other_item'>
+      <view class='title'>联系骑手</view>
+      <text>李明</text>
+      <image src='../img/right_arrow.png'></image>
+      <button type="default" bindtap="goto_counter"></button>
+    </view>
+    <view class='order_number other_item'>
+      <view class='title'>订单号</view>
+      <view>0112365478979</view>
+    </view>
+    <view class='order_time other_item'>
+      <view class='title'>订单时间</view>
+      <view>2018-05-06 12:12:12</view>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class foodOrderDetails extends wepy.page {
+    config = {
+      navigationBarTitleText: '订单详情',
+      navigationBarBackgroundColor: '#fff',
+      navigationBarTextStyle: 'black'
+    }
+
+    data = {
+      submit_text: '去支付',
+      standard: true,
+      standard_price: 100,
+      order_list: [
+        {
+          id: 111111111111,
+          src: '../img/WX20180915-145327.png',
+          name: '韩版宽松百搭夏季学生韩版宽松百搭夏季学生',
+          sku: [],
+          price: '20',
+          number: 2
+        },
+        {
+          id: 111111111112,
+          src: '../img/WX20180915-145327.png',
+          name: '韩版宽松百搭夏季学生韩版宽松百搭夏季学生韩版宽松百搭夏季学生',
+          sku: [],
+          price: '30',
+          number: 1
+        },
+        {
+          id: 111111111113,
+          src: '../img/WX20180915-145327.png',
+          name: '韩版宽松百搭夏季学生',
+          sku: [],
+          price: '40',
+          number: 1
+        }
+      ],
+      total_price: 0,
+      message: '多放辣椒，不要葱花',
+      fact_pay: 14
+    }
+
+    methods = {
+      goto_counter () {
+        wepy.showModal({
+          content: '本单将使用真实号码拨打',
+          success: function(res) {
+            if (res.confirm) {
+              wepy.makePhoneCall({
+                phoneNumber: '13931161076'
+              })
+            }
+          }
+        })
+      }
+    }
+
+    onLoad() {
+    }
+  }
+</script>

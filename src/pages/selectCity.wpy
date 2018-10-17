@@ -1,0 +1,57 @@
+<style lang="less">
+  page{background:#EBEBEB;font-size:30rpx;padding-bottom:110rpx;}
+  .list{width:694rpx;padding:0 28rpx;background:#fff;margin-top:4rpx;}
+  .item{height:70rpx;padding-top:2rpx;display:-webkit-box;display:-webkit-flex;display:flex;-webkit-justify-content:space-between;justify-content:space-between;border-top:2rpx solid #F5F4F5;-webkit-align-items:center;align-items:center;color:#454545;}
+  .item text{margin-left:30rpx;}
+  .icon{width:20rpx;height:20rpx;border-top:2rpx solid rgb(180, 181, 182);border-right:2rpx solid rgb(180, 181, 182);display:inline-block;-webkit-transform:rotate(45deg);transform:rotate(45deg);margin-right:4rpx;}
+</style>
+<template>
+  <view class='container'>
+    <view class='list'>
+      <repeat for='{{list}}'>
+        <navigator>
+          <view class='item'>
+            <view class='item_left'>{{item.name}}<text wx:if='{{item.integral}}'>{{item.integral}}积分</text></view>
+            <view class='icon'></view>
+          </view>
+        </navigator>
+      </repeat>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  export default class selectCity extends wepy.page {
+    config = {
+      navigationBarTitleText: '请选择地区',
+      navigationBarBackgroundColor: '#fff',
+      navigationBarTextStyle: 'black'
+    }
+    data = {
+      list: [
+        {
+          name: '乐活俱乐部（河北）',
+          integral: '500'
+        },
+        {
+          name: '乐活俱乐部（北京）',
+          integral: '500'
+        },
+        {
+          name: '乐活俱乐部（上海）',
+          integral: ''
+        },
+        {
+          name: '乐活俱乐部（福建）',
+          integral: ''
+        }
+      ]
+    }
+    methods = {
+    }
+
+    onLoad () {
+    }
+  }
+</script>

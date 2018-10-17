@@ -1,0 +1,172 @@
+<style lang="less">
+page{padding-bottom:100rpx;}
+.searcher {padding:10px;}
+.searcher input {padding:8rpx 16rpx;background: white;font-size: 14px;color: #ccc;border-radius: 5px;text-align: center;background:#F4F4F4}
+.placeholder-class {color: #ccc;text-align: center;}
+.header {font-size:26rpx;padding:20rpx;color:#949494;padding-bottom:10rpx;}
+.current {padding:20rpx;display:flex;justify-content:space-between;align-items: center;font-size:30rpx;}
+.current view{color:#5B9ACB;font-size:28rpx;}
+.current image {width:40rpx;height:40rpx;margin-top:-4rpx;margin-right:2rpx;}
+.item {padding: 10px;display: flex;flex-direction: column;border-bottom: 1px solid #eee;}
+.item .title {width: 100%;font-size:30rpx;color: #333;}
+.item .address {width: 100%;font-size:28rpx;line-height:46rpx;color: #666;}
+.grey_bar{width:750rpx;height:12rpx;background:#F4F3F4}
+.add{position:fixed;bottom:0;left:0;width:700rpx;height:90rpx;padding:0 25rpx;display: -webkit-box;display:-webkit-flex;display:flex;-webkit-justify-content:space-between;justify-content:space-between;-webkit-align-items:center;align-items:center;border-top:2rpx solid #E0E0E0;background:#fff;}
+.add view{color:#5B9ACB;font-size:30rpx;}
+.add text{width:20rpx;height:20rpx;border-top:4rpx solid rgb(180, 181, 182);border-right:4rpx solid rgb(180, 181, 182);display:inline-block;-webkit-transform:rotate(45deg);transform:rotate(45deg);}
+</style>
+<template>
+  <view class='container'>
+    <view class="searcher">
+      <input type="text" bindinput="keywordTyping" placeholder="请输入地址" placeholder-class="placeholder-class" />
+    </view>
+    <view class="header">当前地址</view>
+    <view class="current">
+      <text bindtap="geoTapped">{{address}}</text>
+      <view bindtap="reloadCurrent">
+        <image src="../img/geo.png" />重新定位
+      </view>
+    </view>
+
+    <view style="display:{{search_outer?'block':'none'}}">
+      <view class='grey_bar'></view>
+      <view class="header">搜索地址</view>
+      <view class="list">
+        <view class="item" bindtap="addressTapped" data-title="{{item.title}}" wx:for='{{result}}' wx:key='{{item.title}}'>
+          <text class="title">{{item.title}}</text>
+          <text class="address">{{item.address}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class='grey_bar'></view>
+    <view class="header">收货地址</view>
+    <view class="list">
+      <view class="item" bindtap="addressTapped" data-title="{{item.title}}" wx:for='{{receive_list}}' wx:key='{{item.title}}'>
+        <text class="title">{{item.title}}</text>
+        <text class="address">{{item.address}}</text>
+        <text class="address">{{item.name}} {{item.tel}}</text>
+      </view>
+    </view>
+
+    <view style="display:{{nearby_outer?'block':'none'}}">
+      <view class='grey_bar'></view>
+      <view class="header">附近地址</view>
+      <view class="list">
+        <view class="item" bindtap="addressTapped" data-title="{{item.title}}" wx:for='{{result}}' wx:key='{{item.title}}'>
+          <text class="title">{{item.title}}</text>
+          <text class="address">{{item.address}}</text>
+        </view>
+      </view>
+    </view>
+    <navigator url='addAddressUse'>
+      <view class='add'>
+        <view>新增地址</view>
+        <text></text>
+      </view>
+    </navigator>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import QQMapWX from '../libs/qqmap-wx-jssdk.min'
+  import WxNotificationCenter from '../libs/WxNotificationCenter'
+  var qqmapsdk
+  
+  export default class searchMeal extends wepy.page {
+    config = {
+      navigationBarTitleText: '选择收货地址',
+      navigationBarBackgroundColor: '#fff',
+      navigationBarTextStyle: 'black'
+    }
+    data = {
+      address: '',
+      result: [],
+      receive_list: [
+        {
+          title: '天海御天下',
+          address: '塔北路85号塔北路85号',
+          name: '王晓红',
+          tel: '15954544532'
+        },
+        {
+          title: '过大全场',
+          address: '塔北路85号塔北路85号',
+          name: '王晓红',
+          tel: '15954544532'
+        },
+        {
+          title: '天海御天下（开始点击）',
+          address: '塔北路85号塔北路85号',
+          name: '王晓红',
+          tel: '15954544532'
+        }
+      ],
+      search_outer: false,
+      nearby_outer: true
+    }
+    methods = {
+      reloadCurrent () {
+        console.log('调用reloadCurrent了')
+        var that = this
+        that.address = '正在定位中...'
+        qqmapsdk.reverseGeocoder({
+          poi_options: 'policy=2',
+          get_poi: 1,
+          success: function (res) {
+            console.log('reloadCurrent定位成功了')
+            that.address = res.result.formatted_addresses.recommend
+            that.result = res.result.pois
+            that.city = res.result.address_component.city
+            that.$apply()
+          }
+        })
+      },
+      keywordTyping: function (e) {
+        var that = this
+        var keyword = e.detail.value
+        qqmapsdk.getSuggestion({
+          keyword: keyword,
+          region: that.city,
+          success: function (res) {
+            that.nearby_outer = false
+            that.search_outer = true
+            that.result = res.data
+            that.$apply()
+          }
+        })
+      },
+      addressTapped: function (e) {
+        var title = e.currentTarget.dataset.title
+        WxNotificationCenter.postNotificationName('addressSelectedNotification', title)
+        wepy.navigateBack()
+      },
+      geoTapped: function () {
+        var that = this
+        var title = that.address
+        WxNotificationCenter.postNotificationName('addressSelectedNotification', title)
+        wepy.navigateBack()
+      }
+    }
+
+    onLoad () {
+      var that = this
+      qqmapsdk = new QQMapWX({
+        key: '3EKBZ-CNBL6-UQIS6-M7FAE-YF6K6-BKFYA'
+      })
+      that.address = '正在定位中...'
+      qqmapsdk.reverseGeocoder({
+        poi_options: 'policy=2',
+        get_poi: 1,
+        success: function (res) {
+          that.nearby_outer = true
+          that.address = res.result.formatted_addresses.recommend
+          that.result = res.result.pois
+          that.city = res.result.address_component.city
+          that.$apply()
+        }
+      })
+    }
+  }
+</script>

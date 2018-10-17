@@ -1,0 +1,159 @@
+<style lang="less">
+  page{font-size:30rpx;padding-bottom:110rpx;}
+  .container{background:#fff;margin-top:30rpx;}
+  .item{width:690rpx;padding:14rpx 26rpx 14rpx 36rpx;display:-webkit-box;display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;}
+  .item .title{width:140rpx;-webkit-flex-shrink:0;flex-shrink:0;}
+  .item .info{width:470rpx;}
+  .item .info input{width:100%;color:#656565}
+  .item image{width:16rpx;height:28rpx;}
+  .address_details{-webkit-align-items:flex-start;align-items:flex-start;}
+  .address_details textarea{line-height:42rpx;height:84rpx;width:500rpx;color:#656565;}
+  .set_default{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-justify-content:space-between;justify-content:space-between;width:690rpx;padding:0 36rpx;-webkit-align-items:center;align-items:center;height:86rpx;}
+  .submit{position:fixed;left:25rpx;bottom:25rpx;}
+  .submit button{width:700rpx;height:80rpx;border-radius:8rpx;background:#CF1B2F;color:#fff;font-size:34rpx;line-height:80rpx;text-align:center;}
+</style>
+<template>
+  <view class='container'>
+    <form bindsubmit="formSubmit">
+      <view class='list'>
+        <view class='item'>
+          <view class='title'>收货人：</view>
+          <view class='info'>
+            <input placeholder='您的姓名' name='name' value='{{name}}'/>
+          </view>
+        </view>
+        <view class='item'>
+          <view class='title'>电话：</view>
+          <view class='info'>
+            <input placeholder='您的电话' name='phone' value='{{phone}}' type='number' maxlength='11'/>
+          </view>
+        </view>
+        <view class='item' @tap='choosemap'>
+          <view class='title'>地址：</view>
+          <view class='info'>
+            <input disabled placeholder='选择收货地址' value='{{address}}' name='address'/>
+          </view>
+          <image src='../img/right_arrow.png'></image>
+        </view>
+        <view class='item address_details'>
+          <view class='title'>门牌号：</view>
+          <view class='info'>
+            <textarea placeholder='例：5号楼501' name='address_details' value='{{address_details}}'></textarea>
+          </view>
+        </view>
+      </view>
+      <view class='set_default'>
+        <view>设置默认地址</view>
+        <view>
+          <switch checked='{{checked}}' name='checked' bindchange='switchChange' class="switch" color='#CF1B2F'/>
+        </view>
+      </view>
+      <view class='submit'>
+        <button formType="submit">保存</button>
+      </view>
+    </form>  
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import WxNotificationCenter from '../libs/WxNotificationCenter'
+  var that
+  
+  export default class modifyAddress extends wepy.page {
+    config = {
+      navigationBarTitleText: '修改地址',
+      navigationBarBackgroundColor: '#fff',
+      navigationBarTextStyle: 'black'
+    }
+    data = {
+      userInfo: {},
+      name: '',
+      phone: '',
+      address: '',
+      address_details: '',
+      checked: ''
+    }
+    methods = {
+      switchChange (e) {
+        console.log(e.detail.value)
+      },
+      choosemap () {
+        wepy.navigateTo({
+          url: 'search?type=2'
+        })
+      },
+      getAddress2 (obj) {
+        that.address = obj.address
+      },
+      formSubmit (e) {
+        if (!e.detail.value.name) {
+          wepy.showToast({
+            title: '请填写收货人',
+            icon: 'none'
+          })
+          return false
+        }
+        if (!e.detail.value.phone) {
+          wepy.showToast({
+            title: '请填写联系电话',
+            icon: 'none'
+          })
+          return false
+        }
+        var reg = /^1[3|4|5|7|8][0-9]{9}$/
+        var phoneNum = e.detail.value.phone
+        var flag = reg.test(phoneNum)
+        if (!flag) {
+          wepy.showToast({
+            title: '电话号码格式不对，请重新填写',
+            icon: 'none'
+          })
+          return false
+        }
+        if (!e.detail.value.address) {
+          wepy.showToast({
+            title: '请选择收货地址',
+            icon: 'none'
+          })
+          return false
+        }
+
+        this.userInfo.name = e.detail.value.name
+        this.userInfo.phone = e.detail.value.phone
+        this.userInfo.address = e.detail.value.address
+        this.userInfo.address_details = e.detail.value.address_details
+        this.userInfo.checked = e.detail.value.checked
+        for (var i = 0; i < this.$parent.globalData.address_list.length; i++) {
+          if (this.userInfo.id === this.$parent.globalData.address_list[i].id) {
+            this.$parent.globalData.address_list[i] = this.userInfo
+          }
+        }
+        if (e.detail.value.checked) {
+          for (var j = 0; j < this.$parent.globalData.address_list.length; j++) {
+            if (this.userInfo.id !== this.$parent.globalData.address_list[j].id) {
+              this.$parent.globalData.address_list[j].checked = false
+            }
+          }
+        }
+        wepy.navigateBack()
+      }
+    }
+
+    onLoad (options) {
+      that = this
+      WxNotificationCenter.addNotification('addressSelected2', that.methods.getAddress2, that)
+
+      for (var i = 0; i < this.$parent.globalData.address_list.length; i++) {
+        if (options.id === String(this.$parent.globalData.address_list[i].id)) {
+          this.userInfo = this.$parent.globalData.address_list[i]
+        }
+      }
+      this.name = this.userInfo.name
+      this.phone = this.userInfo.phone
+      this.address = this.userInfo.address
+      this.address_details = this.userInfo.address_details
+      this.checked = this.userInfo.checked
+    }
+  }
+</script>

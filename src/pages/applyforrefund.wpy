@@ -1,0 +1,223 @@
+<style lang="less">
+  page{background:#EBEBEB;}
+  image{width:100%;height:100%;}
+  .order_info{overflow:hidden;padding:12rpx 0 12rpx 12rpx;position:relative;}
+  .left_image{width:172rpx;height:172rpx;float:left;}
+  .right_info{float:left;width:450rpx;margin-left:24rpx;font-size:30rpx;}
+  .right_info .name{max-height:80rpx;overflow:hidden;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp:2;text-overflow:ellipsis;}
+  .sku{color:#8E8E8E;font-size:26rpx;margin-top:6rpx;overflow:hidden;white-space:ellipsis;text-overflow:ellipsis;}
+  .price{color:#8E8E8E;display: -webkit-box;display:-webkit-flex;display:flex;-webkit-justify-content:space-between;justify-content:space-between;position:absolute;bottom:10rpx;width:500rpx;font-size:28rpx;}
+  .price_con{color:#000;}
+
+  .refund_number{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-justify-content:space-between;justify-content:space-between;border-bottom:2rpx solid #DFE0E1;background:#fff;padding:0 30rpx;-webkit-align-items:center;align-items:center;height:90rpx;}
+  .number{float:right;}
+  .number view{float:left;width:44rpx;height:44rpx;}
+  .number text{float:left;font-size:32rpx;margin:0 20rpx}
+
+  .refund_reason_outer{margin-bottom:18rpx;background:#fff;overflow:hidden;}
+  .refund_reason{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-justify-content:space-between;justify-content:space-between;line-height:90rpx;font-size:30rpx;padding:0 30rpx;}
+  .refund_reason .choose{color:#8E8E8E;}
+  .refund_reason .icon_arrow{width:20rpx;height:20rpx;border-top:4rpx solid rgb(180, 181, 182);border-right:4rpx solid rgb(180, 181, 182);display:inline-block;-webkit-transform:rotate(45deg);transform:rotate(45deg);margin-right:20rpx;}
+  .refund_reason_outer .other_details{margin:10rpx auto 30rpx;} 
+  .refund_reason_outer .other_details textarea{margin:0 auto;width:680rpx;font-size:28rpx;height:130rpx;line-height:40rpx;} 
+  .mask{position:fixed;bottom:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.3);}
+  .choose_inner{position:fixed;bottom:0;width:100%;box-sizing:border-box;left:0;background:#fff;transform:translate(0,100%);overflow:hidden;z-index:2}
+  .choose_inner .title{line-height:60rpx;margin-top:20rpx;text-align:center;}
+  .choose_inner .reasonlist{padding:0 20rpx;height:470rpx;overflow-y:auto;}
+  .choose_inner .reasonlist label{min-height:80rpx;line-height:50rpx;display:-webkit-box;display:-webkit-flex;display:flex;-webkit-justify-content:space-between;justify-content:space-between;-webkit-align-items:center;align-items:center;padding:20rpx 10rpx 0;border-bottom:2rpx solid #f0f0f0;}
+  .choose_inner .reasonlist label .reason_item{width:600rpx;}
+  .choose_inner .reasonlist label image{width:44rpx;height:44rpx;margin-right:20rpx;-webkit-flex-shrink:0;flex-shrink:0}
+  .choose_inner .close{width:750rpx;text-align:center;line-height:80rpx;background:#CF1B2F;color:#fff;}
+  .totalrefund{line-height:86rpx;font-size:30rpx;background:#fff;margin-bottom:18rpx;padding:0 30rpx;}
+  .totalrefund .red{color:#f00;float:right}
+  .submission{position:fixed;left:25rpx;bottom:25rpx;}
+  .submission .submit{border-radius:8rpx;background:#CF1B2F;color:#fff;font-size:34rpx;width:700rpx;height:80rpx;}
+</style>
+<template>
+  <view class="container">
+    <form bindsubmit="formSubmit">
+      <view class='order_info'>
+        <view class='left_image'>
+          <image src='{{src}}' />
+        </view>
+        <view class='right_info'>
+          <view class='name'>{{good_name}}</view>
+          <view class='sku'>{{sku}}</view>
+          <view class='price'>
+            <view class='price_con'><text wx:if='{{good_integral}}'>{{good_integral}}积分</text><text wx:if='{{good_integral && good_money}}'>+</text><text wx:if='{{good_money}}'>{{good_money}}元</text></view>
+            <view class='price_number'>X 1</view>
+          </view>
+        </view>
+      </view>
+      <view class='refund_number'>
+        <view>退货数量</view>
+        <view class='number'>
+          <view @tap='subtract'>
+              <image src='../img/refund_subtract.png'></image>
+          </view>
+          <text>{{computed_number}}</text>
+          <input hidden name='number' value='{{computed_number}}'/>
+          <view @tap='add'>
+              <image src='../img/refund_add.png'></image>
+          </view>
+        </view>
+      </view>
+      <view class='refund_reason_outer'>
+        <view class='refund_reason'>
+          <view>退货原因</view>
+          <view class='choose' @tap='choose'>{{reason_show}}<text class='icon_arrow'></text></view>
+
+          <input hidden name='reason' value=''/>
+          <view class='mask' @tap='close' style="display:{{mask?'block':'none'}}"></view>
+          <view class='choose_inner' animation="{{animationData}}">
+            <view class='title'>退款原因</view>
+            <view class='reasonlist'>
+              <radio-group name='reason' bindchange='reasonchange'>
+                <repeat for='{{reason_list}}' key="{{item.value}}">
+                  <label>
+                    <view class='reason_item'>{{item.value}}</view>
+                    <radio hidden value='{{item.value}}'></radio>
+                  <image src="../img/{{item.checked?'select_choosed.png':'select.png'}}"></image>
+                  </label>
+                </repeat>
+              </radio-group>
+            </view>
+            <view class='close' @tap='close'>关闭</view>
+          </view>
+        </view>
+        <view class='other_details' wx:if="{{other_reason}}">
+          <textarea placeholder='请描述商品状况，以便我们及时处理' name='other_details'/>
+        </view>
+      </view>
+      <view class='totalrefund'>退还： <text class='red'><text wx:if='{{good_integral}}'>{{computed_integral}}积分</text><text wx:if='{{good_integral && good_money}}'>+</text><text wx:if='{{good_money}}'>{{computed_money}}元</text></text></view>
+      <view class='submission'>
+        <button form-type='submit' class='submit' >提交申请</button>
+      </view>
+    </form>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  export default class applyforrefund extends wepy.page {
+    config = {
+      navigationBarTitleText: '申请退款',
+      navigationBarBackgroundColor: '#fff',
+      navigationBarTextStyle: 'black'
+    }
+    data = {
+      id: 123,
+      url: '',
+      src: '../img/WX20180915-145327.png',
+      good_name: '夏洛特草莓蛋糕',
+      sku: '口味：水蜜桃 规格：箱',
+      good_integral: 500,
+      good_money: 35,
+      totalnumber: 3,
+      computed_number: 1,
+      computed_integral: 500,
+      computed_money: 35,
+      reason_list: [
+        {
+          value: '不想要了'
+        },
+        {
+          value: '买错了'
+        },
+        {
+          value: '这块是后台维护的1'
+        },
+        {
+          value: '这块是后台维护的2'
+        },
+        {
+          value: '其他'
+        }
+      ],
+      mask: false,
+      reason_show: '请选择',
+      other_reason: false
+    }
+    methods = {
+      subtract() {
+        if (this.computed_number > 1) {
+          this.computed_number--
+          this.compute()
+        }
+      },
+      add() {
+        if (this.computed_number < this.totalnumber) {
+          this.computed_number++
+          this.compute()
+        }
+      },
+      reasonchange (e) {
+        this.reason_show = e.detail.value
+        if (e.detail.value === '其他') {
+          this.other_reason = true
+        } else {
+          this.other_reason = false
+        }
+        for (var j = 0; j < this.reason_list.length; j++) {
+          if (e.detail.value === String(this.reason_list[j].value)) {
+            this.reason_list[j].checked = true
+          } else {
+            this.reason_list[j].checked = false
+          }
+        }
+        this.chooseItem()
+      },
+      choose() {
+        var animation = wepy.createAnimation({
+          duration: 500,
+          timingFunction: 'ease'
+        })
+        this.animation = animation
+        animation.translate(0, 0).step()
+        this.setData({
+          animationData: animation.export()
+        })
+        this.mask = true
+      },
+      close () {
+        var animation = wepy.createAnimation({
+          duration: 500,
+          timingFunction: 'ease'
+        })
+        this.animation = animation
+        animation.translate(0, '100%').step()
+        this.setData({
+          animationData: animation.export()
+        })
+        this.mask = false
+      },
+      formSubmit(e) {
+        console.log(e.detail.value)
+        wepy.navigateTo({
+          url: 'refundDetails'
+        })
+      }
+    }
+
+    compute() {
+      this.computed_integral = this.good_integral * this.computed_number
+      this.computed_money = this.good_money * this.computed_number
+    }
+
+    chooseItem () {
+      var animation = wepy.createAnimation({
+        duration: 500,
+        timingFunction: 'ease'
+      })
+      this.animation = animation
+      animation.translate(0, '100%').step()
+      this.setData({
+        animationData: animation.export()
+      })
+      this.mask = false
+    }
+
+    onLoad () {
+    }
+  }
+</script>

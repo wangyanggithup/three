@@ -1,0 +1,160 @@
+<style lang="less">
+  image{width:100%;height:100%}
+  .top{text-align:center;background:#fff;padding-top:20rpx;}
+  .top .photo{width:186rpx;height:186rpx;background:#ddd;border-radius:50%;overflow:hidden;margin:0 auto;margin-bottom:30rpx;}
+  .top button{font-size:32rpx;padding:0 30rpx;border-radius:10rpx;background:0;margin-top:20rpx;color:#000;line-height:50rpx;}
+  .top .name{line-height:50rpx;font-size:32rpx;}
+  .top .grade{color:#fcfcfc;background:#fb0703;line-height:38rpx;border-radius:19rpx;padding:0 14rpx;display:inline-block;font-size:24rpx;}
+  
+  .integral{height:90rpx;line-height:90rpx;margin-top:26rpx;background:#fff;overflow:hidden;padding:0 26rpx;}
+  .integral .left{float:left;}
+  .integral .right{float:right;color:#868585;}
+  .myorder,.address{height:90rpx;line-height:90rpx;}
+  .myorder navigator, .address navigator{overflow:hidden;padding:0 26rpx;}
+  .myorder .left,.address .left{float:left;}
+  .myorder .right,.address .right{float:right;color:#828282;font-size:28rpx;}
+  .myorder .right .right_arrow{width:14rpx;height:27rpx;margin:-4rpx 0 0 36rpx;}
+  .address .right_arrow{float:right;width:14rpx;height:27rpx;margin-top:30rpx;}
+  .list{overflow:hidden;font-size:26rpx;background:#fff;padding:20rpx 80rpx;}
+  .list .item{float:left;width:25%;}
+  .list .item navigator{width:100%;text-align:center;position: relative;padding-bottom:6rpx;}
+  .list .item navigator view{height:54rpx;margin:20rpx 0 10rpx;}
+  .list .item1 navigator view image{width:53rpx;height:53rpx;}
+  .list .item2 navigator view image{width:64rpx;height:54rpx;}
+  .list .item3 navigator view image{width:44rpx;height:52rpx;}
+  .list .item4 navigator view image{width:52rpx;height:50rpx;}
+  .list .item navigator label{color:#868585;}
+	.list .item navigator .tip{position: absolute;right: 40rpx;top:-14rpx;background:rgb(243, 48, 62);border-radius: 50%;overflow: hidden;color:#fff;font-size:22rpx;min-width:26rpx;text-align:center;padding:0 2rpx;}
+</style>
+<template>
+  <view class="container">
+    <view class='top'>
+      <view class='photo'>
+        <image src='{{userInfo.avatarUrl}}'></image>
+      </view>  
+      <button open-type="getUserInfo" bindgetuserinfo='getUserInfo' wx:if='{{!hasUserInfo}}'>登录</button>
+      <view class='name' wx:if='{{hasUserInfo}}'>{{userInfo.nickName}}</view>
+      <view class='grade'>{{grade}}</view>
+    </view>
+    <view class='integral'>
+      <view class='left'>我的积分</view>
+      <view class='right'>{{integral}}</view>
+    </view>
+    <view class='myorder'>
+      <navigator url='ordersList'>
+        <view class='left'>我的订单</view>
+        <view class='right'>查看全部订单<image class='right_arrow' src='../img/right_arrow.png'></image></view>
+      </navigator>
+    </view>
+    <view class='list'>
+      <view class='item item1'>
+        <navigator url='ordersList?ordertype=1'>
+          <text class="tip" wx:if='{{unpaidnum}}'>{{unpaidnum}}</text>
+          <view>
+            <image src='../img/list_icon1.png'></image>
+          </view>
+          <label>待支付</label>
+        </navigator>
+      </view>
+      <view class='item item2'>
+        <navigator url='ordersList?ordertype=2'>
+          <text class="tip" wx:if='{{undelivernum}}'>{{undelivernum}}</text>
+          <view>
+            <image src='../img/list_icon2.png'></image>
+          </view>
+          <label>服务中</label>
+        </navigator>
+      </view>
+      <view class='item item3'>
+        <navigator url='ordersList?ordertype=3'>
+          <view>
+            <image src='../img/list_icon3.png'></image>
+          </view>
+          <label>已完成</label>
+        </navigator>
+      </view>
+      <view class='item item4'>
+        <navigator url='refundOrdersList'>
+          <view>
+            <image src='../img/list_icon4.png'></image>
+          </view>
+          <label>退款/售后</label>
+        </navigator>
+      </view>
+    </view>
+    <view class='address'>
+      <navigator url='addressList'>
+        <view class='left'>收货地址</view>
+        <image class='right_arrow' src='../img/right_arrow.png'></image>
+      </navigator>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  var that
+  
+  export default class mine extends wepy.page {
+    config = {
+      navigationBarTitleText: '多乐之日',
+      navigationBarBackgroundColor: '#fff',
+      navigationBarTextStyle: 'black'
+    }
+    data = {
+      grade: 'F R E S H',
+      integral: '1000',
+      unpaidnum: 1,
+      undelivernum: 5,
+      userInfo: {avatarUrl: '../img/1536119946389.jpg'},
+      hasUserInfo: false
+    }
+    methods = {
+      getUserInfo (e) {
+        that = this
+        this.userInfo = e.detail.userInfo
+        if (this.userInfo) {
+          console.log('同意了')
+          console.log(e)
+          this.hasUserInfo = true
+          wepy.setStorageSync('userInfo', this.userInfo)
+        } else {
+          console.log('拒绝了')
+          wepy.openSetting({
+            success (res) {
+              if (res.authSetting['scope.userInfo']) {
+                wepy.getUserInfo({
+                  success: function(res) {
+                    console.log(res.userInfo)
+                    that.userInfo = res.userInfo
+                    that.hasUserInfo = true
+                    wepy.setStorageSync('userInfo', res.userInfo)
+                  }
+                })
+              } else {
+                console.log('openSetting  又没同意')
+              }
+            }
+          })
+        }
+      }
+    }
+    onLoad () {
+      that = this
+      wepy.getSetting({
+        success: res => {
+          if (res.authSetting['scope.userInfo']) {
+            wepy.getUserInfo({
+              success: res => {
+                that.userInfo = res.userInfo
+                that.hasUserInfo = true
+                wepy.setStorageSync('userInfo', res.userInfo)
+                that.$apply()
+              }
+            })
+          }
+        }
+      })
+    }
+  }
+</script>

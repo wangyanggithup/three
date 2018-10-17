@@ -1,0 +1,106 @@
+<style lang="less">
+  page{background:#F0F0F0}
+  image{width:100%;height:100%;}
+  .order_list{margin-bottom:8rpx;}
+  .order_item{margin-top:20rpx;background:#fff;overflow:hidden;box-shadow:0 1rpx 5rpx #ccc;}
+  .good_info{width:710rpx;margin:0 20rpx 0 20rpx;overflow:hidden;position:relative;border-bottom:2rpx dashed #ddd;padding:20rpx 0;}
+  .good_info .good_img{float:left;width:188rpx;height:188rpx;}
+  .good_con{float:left;width:500rpx;margin-left:20rpx;}
+  .good_con .good_name{line-height:40rpx;font-size:30rpx;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;}
+  .good_con .good_sku{line-height:50rpx;color:#8e8e8e;font-size:26rpx;display: -webkit-box;display:-webkit-flex;display:flex;-webkit-justify-content:space-between;justify-content:space-between;width:470rpx;}
+  .good_con .good_sku .good_details{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .bottom{overflow:hidden;}
+  .state{line-height:60rpx;padding:0 26rpx;font-size:26rpx;color:#8E8E8E;float:left;}
+  .operate{float:right;margin-right:20rpx;font-size:26rpx;line-height:60rpx;}
+  .operate navigator{color:#8e8e8e;display:inline-block;margin-right:6rpx;}
+  .icon{width:14rpx;height:14rpx;border-top:2rpx solid rgb(180, 181, 182);border-right:2rpx solid rgb(180, 181, 182);display:inline-block;-webkit-transform:rotate(45deg);transform:rotate(45deg);margin-right:4rpx;}
+</style>
+<template>
+  <view class='container'>
+    <view class='order_list'>  
+      <repeat for='{{order_list}}' key='{{item.order_id}}'> 
+        <view class='order_item'>
+          <view class='good_info'>
+            <view class='good_img'> 
+              <image src='{{item.src}}'></image>
+            </view>
+            <view class='good_con'>
+              <view class='good_name'>{{item.name}}</view>
+              <view class='good_sku'>
+                <view>{{item.sku}}</view>
+                <view>X {{item.number}}</view>
+              </view>
+            </view>
+          </view>
+          <view class='bottom'>
+            <view class='state'>
+              <view wx:if='{{item.order_state==1}}'>退款申请中</view>
+              <view wx:if='{{item.order_state==2}}'>已受理</view>
+              <view wx:if='{{item.order_state==3}}'>退款完成</view>
+              <view wx:if='{{item.order_state==4}}'>退款失败</view>
+            </view>
+            <view class='operate'>
+              <navigator url='{{item.url}}'>退款详情</navigator>
+              <view class='icon'></view>
+            </view>
+          </view>
+        </view> 
+      </repeat>
+	  </view>
+  </view>         
+</template>
+
+<script>
+  import wepy from 'wepy'
+  export default class refundOrdersList extends wepy.page {
+    config = {
+      navigationBarTitleText: '退款订单',
+      navigationBarBackgroundColor: '#fff',
+      navigationBarTextStyle: 'black'
+    }
+    data = {
+      order_list: [
+        {
+          url: 'refundDetails',
+          name: '水清颜蜗牛修护柔肤水',
+          order_state: 1,
+          src: '../img/1536119946389.jpg',
+          sku: '口味：水蜜桃 规格：箱',
+          order_id: '111',
+          number: 1
+        },
+        {
+          url: '',
+          name: '咖啡券',
+          order_state: 2,
+          src: '../img/1536119946389.jpg',
+          sku: '',
+          order_id: '222',
+          number: 2
+        },
+        {
+          url: '',
+          name: '水清颜蜗牛修护柔肤水水清颜蜗牛修护柔肤水颜蜗牛修护柔肤水水清颜蜗牛修护柔肤水',
+          order_state: 3,
+          src: '../img/1536119946389.jpg',
+          sku: '口味：水蜜桃 规格：箱',
+          order_id: '333',
+          number: 1
+        },
+        {
+          url: '',
+          name: '水清颜蜗牛修护柔肤水',
+          order_state: 4,
+          src: '../img/1536119946389.jpg',
+          sku: '口味：水蜜桃 规格：箱',
+          order_id: '444',
+          number: 1
+        }
+      ]
+    }
+    methods = {
+    }
+    onLoad () {
+    }
+  }
+</script>

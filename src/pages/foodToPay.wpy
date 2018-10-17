@@ -1,0 +1,77 @@
+<style lang="less">
+  .time{text-align:center;color:#000;}
+  .time .clock{width:250rpx;height:250rpx;border-radius:250rpx;border:10rpx solid #f00;margin:50rpx auto;line-height:250rpx;font-size:40rpx;}
+  .time .tip1{font-size:32rpx;}
+  .time .tip2{font-size:26rpx;margin-top:10rpx;color:#666;}
+  .operate{margin:30rpx auto;text-align:center;}
+  .operate .item{color:#878684;font-size:30rpx;width:160rpx;line-height:50rpx;text-align:center;border:2rpx solid #C2C2C2;border-radius:10rpx;display:inline-block;margin:0 30rpx;}
+</style>
+<template>
+  <view class="container">
+    <view class='time'>
+      <view class='clock'>{{clock}}</view>
+      <view class='tip1'>订单待支付</view>
+      <view class='tip2'>超时未支付，订单将自动取消哦</view>
+    </view>
+    <view class='operate'>
+      <view class='item'>去支付</view>
+      <navigator class='item' url='foodOrderDetailstopaid'>查看订单</navigator>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  export default class foodToPay extends wepy.page {
+    config = {
+      navigationBarTitleText: '待支付',
+      navigationBarBackgroundColor: '#323337',
+      navigationBarTextStyle: 'white'
+    }
+    data = {
+      clock: '00:00',
+      endtime: ''
+    }
+    methods = {
+    }
+
+    product () {
+      var that = this
+      console.log(Date.parse(new Date()) / 1000)
+      var interval = setInterval(function () {
+        that.forea(that.endtime, interval)
+      }, 1000)
+    }
+
+    forea (endtime, interval) {
+      var timenow = Date.parse(new Date()) / 1000
+      var totalSecond = endtime - timenow
+      if (totalSecond > 0) {
+        this.clock = this.dateformat(totalSecond)
+      } else {
+        this.clock = '已失效'
+        clearInterval(interval)
+      }
+      this.$apply()
+    }
+
+    dateformat(second) {
+      var min = Math.floor(second / 60 % 60)
+      var minStr = min.toString()
+      if (minStr.length === 1) {
+        minStr = '0' + minStr
+      }
+      var sec = Math.floor(second % 60)
+      var secStr = sec.toString()
+      if (secStr.length === 1) {
+        secStr = '0' + secStr
+      }
+      return minStr + ':' + secStr
+    }
+
+    onLoad() {
+      this.product()
+      this.endtime = Date.parse(new Date()) / 1000 + 100
+    }
+  }
+</script>

@@ -1,0 +1,99 @@
+<style lang="less">
+  page{font-size:30rpx;padding-bottom:110rpx;}
+  .address_list{background:#F0F0F0;}
+  .address_item{margin-bottom:20rpx;background:#fff;}
+  .personal_info{border-bottom:2rpx solid #F0F0F0;padding:0 16rpx 0 40rpx;}
+  .personal_info .name{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-justify-content:space-between;justify-content:space-between;width:650rpx;line-height:68rpx;font-size:32rpx;padding-top:10rpx;}
+  .personal_info .address{line-height:40rpx;margin-bottom:16rpx;}
+  .personal_info .address text{font-size:26rpx;background:#FAEBD7;padding:2rpx 8rpx 2rpx;color:#999;margin-right:10rpx;}
+  .operate{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-justify-content:space-between;justify-content:space-between;width:670rpx;margin-left:20rpx;-webkit-align-items:center;align-items:center;height:76rpx;}
+  .operate_right navigator{margin-left:40rpx;float:left;color:#878787;}
+  .operate_right view{margin-left:40rpx;float:left;color:#878787;}
+  .operate_right .edit image{width:37rpx;height:37rpx;margin-top:-8rpx;margin-right:16rpx;}
+  .operate_right .delete image{width:39rpx;height:39rpx;margin-top:-8rpx;margin-right:12rpx;}
+  .add{position:fixed;left:0;bottom:0;width:750rpx;background:#fff;}
+  .add navigator{width:700rpx;height:80rpx;border-radius:8rpx;background:#CF1B2F;color:#fff;font-size:34rpx;line-height:80rpx;text-align:center;margin-left:25rpx;margin-bottom:25rpx;}
+
+  .no_address_list{text-align:center;}
+  .no_address_list image{width:260rpx;height:260rpx;margin-top:100rpx;margin-bottom:20rpx;}
+  .no_address_list view{color:#756E6E;line-height:50rpx;}
+</style>
+<template>
+  <view class='container'>
+    <view class='address_list' wx:if='{{have_address_list}}'>
+      <repeat for='{{address_list}}'>
+        <view class='address_item'>
+          <view class='personal_info'>
+            <view class='name'>
+              <view>{{item.name}}</view>
+              <view>{{item.phone}}</view>
+            </view>
+            <view class='address'><text wx:if='{{item.checked}}'>默认</text>{{item.address}}</view>
+          </view>
+          <view class='operate'>
+            <view class='set_default'></view>
+            <view class='operate_right'>
+              <navigator url='modifyAddress?id={{item.id}}' class='edit'><image src='../img/u487.png'></image>编辑</navigator>
+              <view class='delete' @tap='delete' data-id='{{item.id}}' data-index='{{index}}'><image src='../img/u490.png'></image>删除</view>
+            </view>
+          </view>
+        </view>
+      </repeat>
+    </view> 
+    <view class='no_address_list'  wx:if='{{!have_address_list}}'>
+      <image src='../img/141534826639_.pic.jpg'></image>
+      <view>暂无收货地址</view>
+    </view>
+    <view class='add'>
+      <navigator url='addAddress'>新增地址</navigator>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class addressList extends wepy.page {
+    config = {
+      navigationBarTitleText: '收货地址管理',
+      navigationBarBackgroundColor: '#fff',
+      navigationBarTextStyle: 'black'
+    }
+    data = {
+      prescribed_scope: 100,
+      address_list: [],
+      have_address_list: false
+    }
+    methods = {
+      delete (e) {
+        let that = this
+        wepy.showModal({
+          title: '提示',
+          content: '确定要删除此地址吗？',
+          success: function(res) {
+            if (res.confirm) {
+              that.address_list.splice(e.currentTarget.dataset.index, 1)
+              console.log('像后台发送删除id为' + e.currentTarget.dataset.id + '的地址')
+              console.log('前台页面删除第' + e.currentTarget.dataset.index + '项')
+              that.$parent.globalData.address_list = that.address_list
+              if (!that.address_list.length) {
+                that.have_address_list = false
+              }
+              that.$apply()
+            }
+          }
+        })
+      }
+    }
+
+    onLoad () {
+      if (this.$parent.globalData.address_list.length) {
+        this.address_list = this.$parent.globalData.address_list
+        this.have_address_list = true
+      } else {
+        this.address_list = this.$parent.globalData.address_list
+        this.have_address_list = false
+      }
+    }
+  }
+</script>

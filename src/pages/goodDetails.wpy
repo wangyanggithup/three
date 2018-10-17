@@ -1,0 +1,289 @@
+<style lang="less">
+  page{padding-bottom:100rpx;}
+  .banner{width:750rpx;}
+  .banner image{width:750rpx;}
+  .good_info{border-radius:12rpx;overflow:hidden;font-size:32rpx;padding:20rpx 14rpx 0;}
+  .good_info .info_price{line-height:80rpx;display:-webkit-box;display:-webkit-flex;display:flex;-webkit-justify-content:space-between;justify-content:space-between;padding-right:20rpx;}
+  .good_info .info_price .now{color:rgb(250,18,71);margin-right:30rpx;}
+  .good_info .info_price .sales_volume{font-size:28rpx;color:#8e8e8e;}
+  .good_info .info_price .original{color:rgb(142,142,142);text-decoration:line-through;font-size:28rpx;color:rgb(142,142,142);}
+  .content{width:720rpx;margin:0 auto;background:#eee;padding:10rpx 0;}
+  .buy{position:fixed;left:0;bottom:0;background:#C5C5C5;text-align:center;width:750rpx;height:80rpx;line-height:80rpx;font-size:34rpx;}
+  
+   .mask{position:fixed;bottom:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.3);}
+  .choose_sku{position:fixed;bottom:0;width:750rpx;box-sizing:border-box;left:0;background:#fff;transform:translate(0,100%);overflow:hidden;z-index:2}
+  .choose_sku .sku_close{width:40rpx;height:40rpx;position:absolute;top:20rpx;right:20rpx;}
+  .choose_sku_con{width:630rpx;margin:0 auto;padding-bottom:30rpx;}
+  .choose_sku .title{margin-top:50rpx;font-size:32rpx;}
+  .choose_sku .price{margin-top:18rpx;color:#CF1B2F;margin-bottom:10rpx;}
+  .choose_sku .sku_list{overflow-y:auto;font-size:28rpx;max-height:500rpx;}
+  .choose_sku .sku_list .sku_title{line-height:70rpx;border-top:2rpx solid #F4F3F4;}
+  .choose_sku .sku_list .sku_con{overflow:hidden;margin-bottom:20rpx;}
+  .choose_sku .sku_list .sku_con radio-group:after{display:'block';clear:both;content:''}
+  .choose_sku .sku_list .sku_con label{float:left;line-height:40rpx;padding:0 26rpx;font-size:24rpx;border-radius:12rpx;margin:12rpx 14rpx 12rpx 14rpx;border:2rpx solid #C0C0C0;box-shadow:0 0 12rpx -4rpx #333;}
+  .choose_sku .sku_list .sku_con .checked{border:2rpx solid #F70003;color:#F70003;box-shadow:none;}
+  .choose_sku .confirm{width:750rpx;height:80rpx;text-align:center;line-height:80rpx;background:#f00;color:#fff;}
+  .fixed_bottom_tip{width:750rpx;height:40rpx;background:#F0F0F0;color:#e5405e;text-align:center;font-size:20rpx;position:fixed;bottom:0;left:0;line-height:40rpx;}
+  .choose_sku .choose_sku_number{overflow:hidden;display: -webkit-box;display:-webkit-flex;display:flex;-webkit-justify-content:space-between;justify-content:space-between;border-top:2rpx solid #F4F3F4;padding-bottom:6rpx;-webkit-align-items:center;align-items:center;}
+  .choose_sku_number .number view{float:left;width:80rpx;height:80rpx;text-align:center;}
+  .choose_sku_number .number view image{width:44rpx;height:44rpx;margin-top:18rpx;}
+  .choose_sku_number .number text{float:left;font-size:32rpx;margin:18rpx 10rpx 0;color:#6A6A6A}
+
+  .integral_bottom button{position:fixed;left:0;bottom:0;background:rgb(197,197,197);text-align:center;width:750rpx;height:80rpx;line-height:80rpx;font-size:32rpx;}
+</style>
+<template>
+  <view class="container">
+    <view class="banner">
+      <image src='{{bannerUrl}}' mode='widthFix'></image>
+    </view>
+    <view class='good_info'>
+      <view class='info_name'>{{name}}</view>
+      <view class='info_price'>
+        <text class='now'>{{good_integral}}积分+{{good_money}}元</text>
+        <text class='sales_volume'>月销{{sales_volume}}笔</text>
+        <text class='original'>{{original_price}}</text>
+      </view>
+    </view>
+    <view class='content'>商品详情富文本</view> 
+    <view class='money_bottom'>
+      <form bindsubmit="formSubmit">
+        <view class='buy' @tap='choose' wx:if='{{stock_number}}'>立即购买</view>
+        <view class='buy' @tap='stock_tip' wx:if='{{!stock_number}}'>已售完</view>
+        <view class='mask' @tap='close' style="display:{{mask?'block':'none'}}"></view>
+        <view class='choose_sku' animation="{{animationData}}">
+          <image @tap='close' src='../img/close.png' class='sku_close'></image>
+          <view class='choose_sku_con'>
+            <view class='title'>{{name}}</view>
+            <view class='price'>¥ {{good_integral}}</view>
+            <view class='sku_list'>
+              <repeat for='{{sku_list}}' key="{{item.sku_title}}">
+                <view class='sku_title'>{{item.sku_title}}</view>
+                <view class='sku_con'>
+                  <radio-group name='reason' bindchange='skuChange'>
+                    <repeat for='{{item.sku_con}}' key="{{item.value}}">
+                      <label class="{{item.checked?'checked':''}}">
+                        <view>{{item.name}}</view>
+                        <radio hidden value='{{item.value}}' checked='{{item.checked}}'></radio>
+                      </label>
+                    </repeat>
+                  </radio-group>
+                </view>
+              </repeat>
+            </view>
+            <view class='choose_sku_number'>
+              <view>数量</view>
+              <view class='number'>
+                <view @tap='sku_subtract' class="subtract">
+                  <image src="../img/subtract_icon.png"></image>
+                </view>
+                <text>{{computed_number}}</text>
+                <view @tap='sku_add' class='add'>
+                  <image src='../img/add_icon.png'></image>
+                </view>
+              </view>
+            </view>
+          </view>
+          <button class='confirm' formType="submit" style="background:{{integral_enough?'#E23A38':'#C5C5C5'}}">{{submit_text}}</button>
+        </view>
+      </form>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  export default class goodDetails extends wepy.page {
+    config = {
+      navigationBarTitleText: '商品详情',
+      navigationBarBackgroundColor: '#f0f0f0',
+      navigationBarTextStyle: 'black'
+    }
+
+    data = {
+      bannerUrl: '../img/1536119946389.jpg',
+      name: '韩版宽松百搭夏季学生',
+      original_price: '50元',
+      sales_volume: 50,
+      sku_list: [
+        {
+          sku_title: '请选择颜色',
+          sku_con: [
+            {
+              value: '11',
+              name: '黑色',
+              checked: true,
+              price: 10
+            },
+            {
+              value: '12',
+              name: '黄色',
+              checked: false,
+              price: 18
+            },
+            {
+              value: '13',
+              name: '红色',
+              checked: false,
+              price: 18
+            },
+            {
+              value: '14',
+              name: '黄色',
+              checked: false,
+              price: 18
+            },
+            {
+              value: '15',
+              name: '红色',
+              checked: false,
+              price: 18
+            },
+            {
+              value: '16',
+              name: '黄色',
+              checked: false,
+              price: 18
+            },
+            {
+              value: '17',
+              name: '红色',
+              checked: false,
+              price: 18
+            }
+          ]
+        },
+        {
+          sku_title: '请选择尺寸',
+          sku_con: [
+            {
+              value: '18',
+              name: 'M',
+              checked: true
+            },
+            {
+              value: '19',
+              name: 'XL',
+              checked: false
+            },
+            {
+              value: '20',
+              name: '2XL',
+              checked: false
+            }
+          ]
+        }
+      ],
+      id: 123,
+      stock_number: '',
+      good_integral: 500,
+      good_money: 36,
+      myintegral: 1000,
+      computed_integral: 500,
+      computed_money: 36,
+      computed_number: 1,
+      integral_enough: true,
+      submit_text: '确定',
+      mask: false
+    }
+    methods = {
+      choose() {
+        this.mask = true
+        var animation = wepy.createAnimation({
+          duration: 500,
+          timingFunction: 'ease'
+        })
+        this.animation = animation
+        animation.translate(0, 0).step()
+        this.setData({
+          animationData: animation.export()
+        })
+      },
+      sku_subtract() {
+        if (this.computed_number <= 1) {
+          return
+        }
+        this.computed_number--
+        this.compute()
+      },
+      sku_add() {
+        this.computed_number++
+        this.compute()
+      },
+      close () {
+        this.mask = false
+        var animation = wepy.createAnimation({
+          duration: 500,
+          timingFunction: 'ease'
+        })
+        this.animation = animation
+        animation.translate(0, '100%').step()
+        this.setData({
+          animationData: animation.export()
+        })
+      },
+      skuChange (e) {
+        for (var i = 0; i < this.sku_list.length; i++) {
+          for (var j = 0; j < this.sku_list[i].sku_con.length; j++) {
+            if (e.detail.value === String(this.sku_list[i].sku_con[j].value)) {
+              for (var q = 0; q < this.sku_list[i].sku_con.length; q++) {
+                this.sku_list[i].sku_con[q].checked = false
+              }
+              this.sku_list[i].sku_con[j].checked = true
+            }
+          }
+        }
+      },
+
+      formSubmit(e) {
+        if (!this.integral_enough) {
+          return false
+        }
+        this.mask = false
+        var animation = wepy.createAnimation({
+          duration: 500,
+          timingFunction: 'ease'
+        })
+        this.animation = animation
+        animation.translate(0, '100%').step()
+        this.setData({
+          animationData: animation.export()
+        })
+        console.log(e.detail.value)
+        wepy.navigateTo({ url: 'confirmOrderReal' })
+      },
+      stock_tip () {
+        wepy.showToast({
+          title: '本商品已售完',
+          icon: 'none'
+        })
+      }
+    }
+
+    compute() {
+      this.computed_integral = this.good_integral * this.computed_number
+      this.computed_money = this.good_money * this.computed_number
+      if (this.computed_integral > this.myintegral) {
+        this.integral_enough = false
+        this.submit_text = '积分不足'
+      } else {
+        this.integral_enough = true
+        this.submit_text = '确定'
+      }
+      if (this.computed_number > this.stock_number) {
+        this.integral_enough = false
+        this.submit_text = '库存不足'
+      } else if (this.computed_number >= this.stock_number && this.computed_integral <= this.myintegral) {
+        this.integral_enough = true
+        this.submit_text = '确定'
+      }
+      console.log(this.computed_integral)
+    }
+
+    onLoad(options) {
+      this.stock_number = parseInt(options.stock_number)
+      if (this.good_integral > this.myintegral) {
+        this.integral_enough = false
+      }
+    }
+  }
+</script>

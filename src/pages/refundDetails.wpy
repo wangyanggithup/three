@@ -1,0 +1,132 @@
+<style lang="less">
+  page{background:#F0F0F0;font-size:30rpx;}
+  image{width:100%;height:100%;}
+  .top_state{background: -webkit-linear-gradient(left, #FF8502 , #FF4701); 
+            background: -o-linear-gradient(right, #FF8502, #FF4701);
+            background: -moz-linear-gradient(right, #FF8502, #FF4701); 
+            background: linear-gradient(to right, #FF8502 , #FF4701);
+            line-height:120rpx;padding-left:34rpx;font-size:32rpx;color:#fff;}
+  .totalprice{line-height:80rpx;background:#fff;padding:0 26rpx;display: -webkit-box;display:-webkit-flex;display:flex;-webkit-justify-content:space-between;justify-content:space-between;}
+  .totalprice .red{color:#f00;}
+
+  .order_info{overflow:hidden;padding:12rpx 0 12rpx 12rpx;position:relative;}
+  .left_image{width:172rpx;height:172rpx;float:left;}
+  .right_info{float:left;width:450rpx;margin-left:24rpx;font-size:30rpx;}
+  .right_info .name{max-height:80rpx;overflow:hidden;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp:2;text-overflow:ellipsis;}
+  .sku{color:#8E8E8E;font-size:26rpx;margin-top:6rpx;overflow:hidden;white-space:ellipsis;text-overflow:ellipsis;}
+  .price{color:#8E8E8E;display: -webkit-box;display:-webkit-flex;display:flex;-webkit-justify-content:space-between;justify-content:space-between;position:absolute;bottom:10rpx;width:500rpx;font-size:28rpx;}
+  .price_con{color:#000;}
+
+  .details{background:#fff;width:710rpx;padding:16rpx 20rpx;}
+  .details .item{line-height:52rpx;color:#8E8E8E;display: -webkit-box;display:-webkit-flex;display:flex;-webkit-justify-content:space-between;justify-content:space-between;}
+  .details .item .item_title{-webkit-flex-shrink: 0;-moz-flex-shrink: 0;flex-shrink:0;margin-right:40rpx;color:#000;}
+  .details .item .explain{padding:7rpx 0;line-height:40rpx;}
+  .operate{overflow:hidden;margin-top:26rpx;background:#fff;}
+  .contact{width:200rpx;height:60rpx;float:right;margin-right:40rpx;position:relative;font-size:28rpx;color:#6E6E6E;text-align:right;margin-top:30rpx;padding-bottom:10rpx;}
+  .contact image{width:50rpx;height:50rpx;margin-top:-3rpx;margin-right:20rpx;}
+  .contact button{position:absolute;top:0;left:0;opacity:0;width:200rpx;height:60rpx;}
+</style>
+<template>
+  <view class="container">
+    <view class='top_state'>
+      <view wx:if='{{refund_state==1}}'>退款申请中</view>
+      <view wx:if='{{refund_state==2}}'>已受理</view>
+      <view wx:if='{{refund_state==3}}'>退款完成</view>
+      <view wx:if='{{refund_state==4}}'>退款失败</view>
+    </view>
+    <view class='totalprice'>
+      <view>退回</view>
+      <view class='red'><text wx:if='{{good_integral}}'>{{good_integral*number}}积分</text><text wx:if='{{good_integral && good_money}}'>+</text><text wx:if='{{good_money}}'>{{good_money*number}}元</text></view>
+    </view>
+
+    <view class='order_info'>
+      <view class='left_image'>
+        <image src='{{src}}' />
+      </view>
+      <view class='right_info'>
+        <view class='name'>{{good_name}}</view>
+        <view class='sku'>{{sku}}</view>
+        <view class='price'>
+          <view class='price_con'><text wx:if='{{good_integral}}'>{{good_integral}}积分</text><text wx:if='{{good_integral && good_money}}'>+</text><text wx:if='{{good_money}}'>{{good_money}}元</text></view>
+          <view class='price_number'>X {{number}}</view>
+        </view>
+      </view>
+    </view>
+
+    <view class='details'>
+      <view class='item'>
+        <view class='item_title'>退款原因</view>
+        <view class='explain'>{{refund_reason}}</view>
+      </view>
+      <view class='item'>
+        <view class='item_title'>申请退款时间</view>
+        <view>{{apply_time}}</view>
+      </view>
+      <view class='item' wx:if='{{refund_state==3}}'>
+        <view class='item_title'>退款完成时间</view>
+        <view>{{complete_time}}</view>
+      </view>
+      <view class='item'>
+        <view class='item_title'>退款订单号</view>
+        <view>{{refund_order_number}}</view>
+      </view>
+      <view class='item'>
+        <view class='item_title'>购买订单号</view>
+        <view>{{buy_order_number}}</view>
+      </view>
+      <view class='item' wx:if='{{refund_state==4}}'>
+        <view class='item_title'>退款失败原因</view>
+        <view class='explain'>{{fail_reason}}</view>
+      </view>
+    </view>
+    <view class='operate'>
+      <view class='contact'>
+        <image src='../img/customer_service.png'></image>联系卖家
+        <button type="default" bindtap="goto_counter"></button>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  export default class refundDetails extends wepy.page {
+    config = {
+      navigationBarTitleText: '退款详情',
+      navigationBarBackgroundColor: '#fff',
+      navigationBarTextStyle: 'black'
+    }
+    data = {
+      refund_state: 3,
+      src: '../img/1536119946389.jpg',
+      good_name: '韩版宽松百搭夏季学生短袖T恤衫',
+      sku: '口味：水蜜桃 规格：箱',
+      good_integral: 500,
+      good_money: '35',
+      number: 2,
+      refund_reason: '买多了',
+      apply_time: '2018-05-03  15:12:12',
+      complete_time: '2018-05-10  18:59:59',
+      refund_order_number: 'O201801021212128865422',
+      buy_order_number: 'O201801021212128865422',
+      fail_reason: '包装已打开，不能退货'
+    }
+
+    methods = {
+      goto_counter () {
+        wepy.showModal({
+          content: '本单将使用真实号码拨打',
+          success: function(res) {
+            if (res.confirm) {
+              wepy.makePhoneCall({
+                phoneNumber: '13931161076'
+              })
+            }
+          }
+        })
+      }
+    }
+    onLoad () {
+    }
+  }
+</script>

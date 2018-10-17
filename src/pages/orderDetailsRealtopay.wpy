@@ -1,0 +1,144 @@
+<style lang="less">
+  page{font-size:30rpx;background-color:#EBEBEB;}
+  image{width:100%;height:100%;}
+  .top_state{background: -webkit-linear-gradient(left, #FF8502 , #FF4701); 
+            background: -o-linear-gradient(right, #FF8502, #FF4701);
+            background: -moz-linear-gradient(right, #FF8502, #FF4701); 
+            background: linear-gradient(to right, #FF8502 , #FF4701);
+            line-height:120rpx;padding-left:34rpx;font-size:32rpx;color:#fff;}
+  .person_info{background:#fff;overflow: hidden;line-height:54rpx;font-size:26rpx;background:#fff;display: -webkit-box;display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;padding:20rpx 0;}
+  .person_info .icon_location{width:66rpx;-webkit-flex-shrink:0;flex-shrink:0;text-align:center;}
+  .person_info .icon_location image{width:30rpx;height:38rpx;}
+  .person_info .address{width:650rpx;line-height:40rpx;color:#8D8D8D}
+  .person_info .address text{margin-right:30rpx;}
+  .order_info navigator{overflow:hidden;padding:12rpx 0 12rpx 12rpx;}
+  .left_image{width:170rpx;height:170rpx;float:left;}
+  .right_info{float:left;width:520rpx;height:170rpx;margin-left:30rpx;font-size:30rpx;}
+  .right_info .name{margin-top:10rpx;}
+  .right_info .name,.right_info .sku{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-justify-content:space-between;justify-content:space-between;}
+  .right_info .name .title{overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;margin-bottom:6rpx;height:84rpx;}
+  .right_info .num{-webkit-flex-shrink:0;flex-shrink:0;margin-left:20rpx;}
+  .right_info .sku{color:#8E8E8E;margin-top:30rpx;font-size:26rpx;}
+  .right_info .sku .title{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+  .other_item{background:#fff;display:-webkit-box;display:-webkit-flex;display:flex;-webkit-justify-content:space-between;justify-content:space-between;line-height:52rpx;font-size:28rpx;padding:0 16rpx;}
+  .good_totalprice{padding-top:20rpx;}
+  .good_freight{padding-bottom:20rpx;}
+  .message{border-top:2rpx solid #E4E4E4;border-bottom:2rpx solid #E4E4E4;padding:6rpx 16rpx;}
+  .order_number{padding-top:10rpx;}
+  .other_item .red{color:#f00}
+  .other_item .grey{color:#6E6E6E;}
+  .message .grey{width:550rpx;-webkit-flex-shrink:0;flex-shrink:0;text-align:right;}
+  .operate{overflow:hidden;padding-top:30rpx;}
+  .contact{width:200rpx;height:60rpx;margin-left:10rpx;position:relative;font-size:28rpx;color:#6E6E6E;text-align:right;margin-top:16rpx;padding-bottom:26rpx;}
+  .contact image{width:50rpx;height:50rpx;margin-top:-3rpx;margin-right:20rpx;}
+  .contact button{position:absolute;top:0;left:0;opacity:0;width:200rpx;height:60rpx;}
+  .operate_right{margin-top:20rpx;margin-left:10rpx;}
+  .operate_right view{float:left;width:140rpx;height:42rpx;border:2rpx solid #9F9F9F;border-radius:50rpx;text-align:center;line-height:42rpx;margin:0 12rpx;color:#9F9F9F;}
+</style>
+<template>
+  <view class="container">
+    <view class='top_state'>等待买家付款</view>
+    <view class='person_info'>
+      <view class='icon_location'><image src='../img/location.png' /></view> 
+      <view class='address'>
+        <view class='buyer'>
+          <text>收货人：{{consingee_name}}</text>
+          <text>{{consingee_phone}}</text>
+        </view>
+        <view class='address_info'>
+          收货地址：{{consingee_address}}
+        </view>
+      </view>
+    </view>
+    <view class='order_info'>
+      <navigator url='{{url}}'>
+        <view class='left_image'>
+          <image src='{{src}}' />
+        </view>
+        <view class='right_info'>
+          <view class='name'>
+            <view class='title'>{{good_name}}</view>
+            <view class='num'><text wx:if='{{good_integral}}'>{{good_integral}}积分</text><text wx:if='{{good_integral && good_money}}'>+</text><text wx:if='{{good_money}}'>{{good_money}}元</text></view>
+          </view>
+          <view class='sku'>
+            <view class='title'>{{sku}}</view>
+            <view class='num'>X{{number}}</view>
+          </view>
+        </view>
+      </navigator>
+    </view>
+    <view class='good_totalprice other_item'>
+      <view>商品总价</view>
+      <view class='red'><text wx:if='{{good_integral}}'>{{good_integral*number}}积分</text><text wx:if='{{good_integral && good_money}}'>+</text><text wx:if='{{good_money}}'>{{good_money*number}}元</text></view>
+    </view>
+    <view class='good_freight other_item'>
+      <view>运费</view>
+      <view class='red'>{{good_freight}}元</view>
+    </view>
+    <view class='message other_item'>
+      <view>留言</view>
+      <view class='grey'>{{massage}}</view>
+    </view>
+    <view class='order_number other_item'>
+      <view>订单编号</view>
+      <view class='grey'>{{order_number}}</view>
+    </view>
+    <view class='order_time other_item'>
+      <view>订单时间</view>
+      <view class='grey'>{{order_time}}</view>
+    </view>
+    <view class='operate other_item'>
+      <view class='contact'>
+        <image src='../img/customer_service.png'></image>联系卖家
+        <button type="default" bindtap="goto_counter"></button>
+      </view>
+      <view class='operate_right'>
+        <view>取消订单</view>
+        <view>付款</view>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  export default class orderDetailsRealtopay extends wepy.page {
+    config = {
+      navigationBarTitleText: '订单详情',
+      navigationBarBackgroundColor: '#fff',
+      navigationBarTextStyle: 'black'
+    }
+    data = {
+      consingee_name: '王天赐',
+      consingee_phone: '15694861101',
+      consingee_address: '河北省石家庄市裕华区裕兴街道天海誉天下C区20号楼2单元1201室',
+      url: 'goodDetails',
+      src: '../img/1536119946389.jpg',
+      good_name: '韩版宽松百搭夏季学生短袖T恤衫',
+      sku: '口味：水蜜桃 规格：箱',
+      good_integral: 500,
+      good_money: 35,
+      number: 2,
+      good_freight: 10,
+      massage: '用两个包装分开',
+      order_number: 'O201801021212128865422',
+      order_time: '2018-05-06  15:12:12'
+    }
+    methods = {
+      goto_counter () {
+        wepy.showModal({
+          content: '本单将使用真实号码拨打',
+          success: function(res) {
+            if (res.confirm) {
+              wepy.makePhoneCall({
+                phoneNumber: '13931161076'
+              })
+            }
+          }
+        })
+      }
+    }
+    onLoad () {
+    }
+  }
+</script>

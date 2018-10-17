@@ -1,0 +1,157 @@
+<style lang="less">
+  image{width:100%;height:100%}
+  page{font-size:30rpx;background-color:#fff;padding-bottom:110rpx;}
+  .order_list{margin:20rpx 0;}
+  .order_info{overflow:hidden;padding:0rpx 26rpx 26rpx 30rpx;}
+  .left_image{width:148rpx;height:148rpx;float:left;}
+  .right_info{float:left;width:520rpx;height:148rpx;margin-left:20rpx;font-size:28rpx;position:relative;}
+  .right_info .name{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;margin-bottom:6rpx;}
+  .right_info .sku{color:#8E8E8E;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .right_info .price{color:#FF3737;font-size:30rpx;margin-top:20rpx;}
+  .right_info .number{position:absolute;right:-20rpx;top:76rpx;}
+  .right_info .number view{float:left;width:80rpx;height:80rpx;text-align:center;}
+  .right_info .number view image{width:44rpx;height:44rpx;margin-top:18rpx;}
+  .right_info .number text{float:left;font-size:32rpx;margin:18rpx 0 0;color:#6A6A6A}
+
+  .other_item{-webkit-align-items:center;align-items:center;border-bottom:2rpx solid #E4E4E4;background:#fff;display: -webkit-box;display:-webkit-flex;display:flex;-webkit-justify-content:space-between;justify-content:space-between;padding:18rpx 40rpx;font-size:30rpx;}
+
+  .fixed{position:fixed;bottom:0;left:0;width:750rpx;overflow:hidden;clear:both;background:#F0F0F0;z-index:2;}
+  .fixed .left{width:470rpx;float:left;text-align:right;padding-right:30rpx;line-height:110rpx;font-size:30rpx;color:#FF3737;}
+  .fixed .submit{background:#8E8E8E;width:250rpx;float:left;color:#fff;height:110rpx;line-height:110rpx;}
+</style>
+<template>
+  <view class="container">
+    <form bindsubmit="formSubmit">
+      <view class='order_list'>
+        <repeat for='{{order_list}}'>
+          <view class='order_info'>
+            <view class='left_image'>
+              <image src='{{item.src}}' />
+            </view>
+            <view class='right_info'>
+              <view class='name'>{{item.name}}</view>
+              <view class='sku'>{{item.sku}}</view>
+              <view class='price'>{{item.price}}元</view>
+              <view class='number'>
+                <view @tap='subtract' class="subtract" data-index='{{index}}'>
+                  <image src='../img/subtract_icon.png'></image>
+                </view>
+                <text>{{item.number}}</text>
+                <view @tap='add' class='add' data-index='{{index}}'>
+                  <image src='../img/add_icon.png'></image>
+                </view>
+              </view>
+            </view>
+          </view>
+        </repeat>
+      </view>
+
+      <view class='discount other_item'>
+        <view>优惠</view>
+        <view>减¥3</view>
+      </view>
+      <view class='lunchbox_money other_item'>
+        <view>餐盒费</view>
+        <view>￥10</view>
+      </view>
+      <view class='freight other_item'>
+        <view>运费</view>
+        <view>￥10</view>
+      </view>
+
+      <view class='fixed'>
+        <view class='left'>合计：{{total_price}}元</view>
+        <button form-type='submit' class='submit' style="background:{{standard?'#C50001':'#8E8E8E'}}">{{submit_text}}</button>
+      </view>
+    </form>  
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class shoppingCart extends wepy.page {
+    config = {
+      navigationBarTitleText: '购物车',
+      navigationBarBackgroundColor: '#F0F0F0',
+      navigationBarTextStyle: 'black'
+    }
+
+    data = {
+      submit_text: '去结算',
+      standard: true,
+      standard_price: 100,
+      order_list: [
+        {
+          id: 111111111111,
+          src: '../img/WX20180915-145327.png',
+          name: '韩版宽松百搭夏季学生',
+          sku: ['颜色：白色'],
+          price: '20',
+          number: 1
+        },
+        {
+          id: 111111111112,
+          src: '../img/WX20180915-145327.png',
+          name: '韩版宽松百搭夏季学生韩版宽松百搭夏季学生韩版宽松百搭夏季学生',
+          sku: ['颜色：白色 容量：400ml 温度：常温'],
+          price: '30',
+          number: 1
+        },
+        {
+          id: 111111111113,
+          src: '../img/WX20180915-145327.png',
+          name: '韩版宽松百搭夏季学生',
+          sku: ['颜色：白色 容量：400ml 温度：常温 口味：橙子'],
+          price: '40',
+          number: 1
+        }
+      ],
+      total_price: 0
+    }
+
+    methods = {
+      subtract(e) {
+        var index = e.currentTarget.dataset.index
+        if (this.order_list[index].number > 1) {
+          this.order_list[index].number--
+          this.total_price -= parseInt(this.order_list[index].price)
+          this.judgeStandard()
+        } else {
+          this.order_list[index].number--
+          this.total_price -= parseInt(this.order_list[index].price)
+          this.judgeStandard()
+          this.order_list.splice(index, 1)
+          console.log(this.order_list)
+        }
+      },
+      add(e) {
+        var index = e.currentTarget.dataset.index
+        this.order_list[index].number++
+        this.total_price += parseInt(this.order_list[index].price)
+        this.judgeStandard()
+      },
+      formSubmit (e) {
+        if (!this.standard) return
+        wepy.navigateTo({ url: 'foodConfirmOrder' })
+      }
+    }
+
+    judgeStandard () {
+      if (this.total_price < this.standard_price) {
+        this.standard = false
+        this.submit_text = '还差' + (this.standard_price - this.total_price) + '元起送'
+      } else {
+        this.standard = true
+        this.submit_text = '去结算'
+      }
+    }
+
+    onLoad() {
+      for (var i = 0; i < this.order_list.length; i++) {
+        this.total_price += this.order_list[i].number * this.order_list[i].price
+      }
+      this.judgeStandard()
+    }
+  }
+</script>

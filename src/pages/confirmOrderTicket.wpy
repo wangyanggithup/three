@@ -1,0 +1,107 @@
+<style lang="less">
+  image{width:100%;height:100%}
+  page{font-size:30rpx;background-color:#f0f0f0;}
+  .order_info navigator{background:#f5f5f5;overflow:hidden;padding:20rpx 0;position:relative;border-bottom:2rpx solid #E0E0E0;}
+  .left_image{width:240rpx;height:240rpx;float:left;margin-left:20rpx;}
+  .right_info{float:left;width:420rpx;margin-left:24rpx;font-size:28rpx;}
+  .color{color:#8E8E8E;}
+  .price{position:absolute;bottom:30rpx;width:420rpx;color:#8E8E8E;display: -webkit-box;display:-webkit-flex;display:flex;-webkit-justify-content:space-between;justify-content:space-between;}
+  .price_con{color:#FF0001;font-size:30rpx;}
+  .tip{width:640rpx;margin:30rpx auto;font-size:30rpx;}
+  .fixed{position:fixed;bottom:0;left:0;width:750rpx;}
+  .fixed checkbox-group{overflow:hidden;margin-right:20rpx;line-height:70rpx;margin-bottom:10rpx;}
+  .fixed navigator{color:#1E9FFF;float:right;}
+  .fixed label{float:right;width:60rpx;height:60rpx;}
+  .fixed .label_icon{width:30rpx;height:30rpx;margin-top:-4rpx;vertical-align:middle;}
+  .bottom{overflow:hidden;clear:both;}
+  .bottom .left{width:470rpx;background:#fff;float:left;text-align:right;padding:4rpx 30rpx 4rpx 0;line-height:40rpx;}
+  .bottom .left .needpay{font-size:30rpx;}
+  .bottom .left .needpay_con{color:#FF3737;}
+  .bottom .left .needpay_number{font-size:26rpx;color:#6E6E6E;}
+  .bottom .submit{background:#C50001;width:250rpx;float:left;color:#fff;height:88rpx;line-height:88rpx;}
+</style>
+<template>
+  <view class="container">
+    <form bindsubmit="formSubmit">
+      <view class='order_info'>
+        <navigator url=''>
+          <view class='left_image'>
+            <image src='../img/1536119946389.jpg' />
+          </view>
+          <view class='right_info'>
+            <view class='name'>韩版宽松百搭夏季学生短袖T恤衫</view>
+            <view class='price'>
+              <view class='price_con'>{{good_integral}}积分+{{good_money}}元</view>
+              <view class='price_number'>X 1</view>
+            </view>
+          </view>
+        </navigator>
+      </view>
+      <view class='tip'>购买/兑换成功后，电子优惠券将自动发放至您的微信卡包，请注意查收。</view>
+      
+      <view class='fixed'>
+        <checkbox-group name='agree' bindchange="checkboxChange">
+          <navigator>同意兑换协议</navigator>
+          <label>
+            <checkbox hidden checked="{{checked}}" value='1' />
+            <view class='label_icon'><image src="../img/{{checked?'select_choosed.png':'select.png'}}"></image></view>
+          </label>
+        </checkbox-group>
+        <view class='bottom'>
+          <view class='left'>
+            <view class='needpay'>应付：<text class='needpay_con'>{{good_integral}}积分+{{good_money}}元</text></view>
+            <view class='needpay_number'>共计1件商品</view>
+          </view>
+          <button form-type='submit' class='submit' style="background:{{integral_enough?'#C50001':'#C5C5C5'}}">{{submit_text}}</button>
+        </view>
+      </view>
+    </form>  
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class confirmOrderTicket extends wepy.page {
+    config = {
+      navigationBarTitleText: '确认订单',
+      navigationBarBackgroundColor: '#393A3F',
+      navigationBarTextStyle: 'white'
+    }
+
+    data = {
+      stock_number: 10,
+      good_integral: 500,
+      good_money: 36,
+      myintegral: 2500,
+      integral_enough: true,
+      submit_text: '立即领取',
+      checked: true
+    }
+
+    methods = {
+      formSubmit (e) {
+        if (!e.detail.value.agree[0]) {
+          wepy.showToast({
+            title: '请同意兑换协议',
+            icon: 'none',
+            duration: 2000
+          })
+          return false
+        }
+        console.log(e.detail.value)
+        wepy.navigateTo({ url: 'paySuccessTicket' })
+      },
+      checkboxChange(e) {
+        if (e.detail.value[0]) {
+          this.checked = true
+        } else {
+          this.checked = false
+        }
+      }
+    }
+
+    onLoad() {
+    }
+  }
+</script>

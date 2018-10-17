@@ -1,0 +1,157 @@
+<style lang="less">
+page{font-size:30rpx;color:#000;}
+.navigator-hover{background:rgba(0,0,0,0); opacity:1}
+image{vertical-align:middle}
+button{border-radius:0;padding:0;font-size:34rpx;}
+button::after{border:0;}
+</style>
+
+<script>
+import wepy from 'wepy'
+var that = this
+
+export default class extends wepy.app {
+  config = {
+    pages: [
+      'pages/index',
+      'pages/foodDetails',
+      'pages/shoppingCart',
+      'pages/foodConfirmOrder',
+      'pages/foodPaySuccess',
+      'pages/foodToPay',
+      'pages/foodOrderDetails',
+      'pages/foodOrderDetailstopay',
+      'pages/shoppingMall',
+      'pages/goodDetails',
+      'pages/cardVoucherDedails',
+      'pages/confirmOrderReal',
+      'pages/confirmOrderTicket',
+      'pages/paySuccessReal',
+      'pages/paySuccessTicket',
+      'pages/orderDetailsTicket',
+      'pages/orderDetailsRealtopay',
+      'pages/orderDetailsRealtodeliver',
+      'pages/orderDetailsRealcanceled',
+      'pages/orderDetailsRealdelivered',
+      'pages/orderDetailsRealcompleted',
+      'pages/orderDetailsRealclose',
+      'pages/applyforrefund',
+      'pages/refundOrdersList',
+      'pages/refundDetails',
+      'pages/mine',
+      'pages/ordersList',
+      'pages/addressList',
+      'pages/chooseAddress',
+      'pages/addAddress',
+      'pages/addAddressUse',
+      'pages/modifyAddress',
+      'pages/modifyAddressUse',
+      'pages/search',
+      'pages/searchMeal',
+      'pages/selectCity'
+    ],
+    window: {
+      backgroundTextStyle: 'light',
+      navigationBarBackgroundColor: '#fff',
+      navigationBarTitleText: 'WeChat',
+      navigationBarTextStyle: 'black'
+    },
+    tabBar: {
+      color: '#bbb5b6',
+      selectedColor: '#e71a3e',
+      backgroundColor: '#fff',
+      list: [
+        {
+          text: '外卖',
+          pagePath: 'pages/index',
+          iconPath: 'img/tab1.png',
+          selectedIconPath: 'img/tab1_active.png'
+        },
+        {
+          text: '商城',
+          pagePath: 'pages/shoppingMall',
+          iconPath: 'img/tab2.png',
+          selectedIconPath: 'img/tab2_active.png'
+        },
+        {
+          text: '我的',
+          pagePath: 'pages/mine',
+          iconPath: 'img/tab3.png',
+          selectedIconPath: 'img/tab3_active.png'
+        }
+      ]
+    }
+  }
+
+  globalData = {
+    shopcart_list: [],
+    address_list: [
+      {
+        id: 111,
+        name: '王天赐1',
+        phone: '15533989855',
+        address: '天海誉天下A区',
+        address_details: '20号楼2单元1201室',
+        checked: true,
+        distance: 120,
+        disabled: false
+      },
+      {
+        id: 222,
+        name: '王天赐2',
+        phone: '15533989855',
+        address: '华城绿洲',
+        address_details: '桥西区东三教街20号',
+        checked: false,
+        distance: 50,
+        disabled: false
+      },
+      {
+        id: 333,
+        name: '王天赐3',
+        phone: '15533989855',
+        address: '天海誉天下B区',
+        address_details: '裕华区裕兴街道36号19号楼2单元1201室',
+        checked: false,
+        distance: 120,
+        disabled: false
+      }
+    ],
+    receiveAddress: {},
+    prescribed_scope: 10
+  }
+  onLaunch() {
+    that = this
+    this.getOpenId(that)
+  }
+  getOpenId (that) {
+    wepy.login({
+      success: function (res) {
+        var code = res.code   // 001vbGnQ1oUv5a18sUnQ1FuxnQ1vbGnm
+        wepy.setStorageSync('code', code)
+        if (code) {
+          wepy.request({
+            url: 'https://api.weixin.qq.com/sns/jscode2session?appid=wx828e61ac4da137d0&secret=f9082e454e8ec3a94d9a021b2775d279&js_code=' + code + '&grant_type=authorization_code',
+            data: {
+              json_code: code
+            },
+            header: {
+              'content-type': 'application/json',
+              'token': '48290fcef72a45640c2b55d0a30260e7' // 默认值
+            },
+            dataType: 'json',
+            success: function (res) {
+              var data = res.data
+              if (data.openid) {
+                wepy.setStorageSync('openid', data.openid)
+              }
+            }
+          })
+        } else {
+          console.log('登录失败！' + res.errMsg)
+        }
+      }
+    })
+  }
+}
+</script>
