@@ -125,31 +125,6 @@
           id: '77',
           text: '饮品',
           active: false
-        },
-        {
-          id: '88',
-          text: '周居',
-          active: false
-        },
-        {
-          id: '99',
-          text: '生活',
-          active: false
-        },
-        {
-          id: '1010',
-          text: '时尚',
-          active: false
-        },
-        {
-          id: '1111',
-          text: '厨房',
-          active: false
-        },
-        {
-          id: '1212',
-          text: '运动',
-          active: false
         }
       ],
       banner_list: [

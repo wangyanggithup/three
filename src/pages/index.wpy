@@ -190,57 +190,32 @@
       nav_list: [
         {
           id: '111',
-          text: '热卖',
+          text: '推荐',
           active: true
         },
         {
           id: '222',
-          text: '女装',
+          text: '特价',
           active: false
         },
         {
           id: '333',
-          text: '童装',
+          text: '优惠券',
           active: false
         },
         {
           id: '555',
-          text: '母婴',
+          text: '甜品',
           active: false
         },
         {
           id: '666',
-          text: '老年人',
+          text: '烘焙',
           active: false
         },
         {
           id: '77',
-          text: '青年',
-          active: false
-        },
-        {
-          id: '88',
-          text: '家居',
-          active: false
-        },
-        {
-          id: '99',
-          text: '生活',
-          active: false
-        },
-        {
-          id: '1010',
-          text: '时尚',
-          active: false
-        },
-        {
-          id: '1111',
-          text: '厨房',
-          active: false
-        },
-        {
-          id: '1212',
-          text: '运动',
+          text: '饮品',
           active: false
         }
       ],
