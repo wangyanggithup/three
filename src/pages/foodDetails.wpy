@@ -9,9 +9,11 @@
   .good_info .info_price .original{text-decoration:line-through;font-size:28rpx;color:#8E8E8E;-webkit-flex:1;flex:1;margin-left:16rpx;}
   .good_info .info_price .sales{color:#707070;font-size:28rpx;}
   .content{background:#fff;}
-  .content .title{font-size:40rpx;padding-left:28rpx;line-height:90rpx;padding-top:40rpx;}
-  .fixed_bottom{position:fixed;left:0;bottom:0;background:#fff;height:80rpx;width:750rpx;}
-  .shopping_cart{width:100rpx;height:100rpx;border-radius:50%;background:#fff;float:left;margin-left:28rpx;line-height:96rpx;margin-top:-16rpx;text-align:center;}
+  .content .title{font-size:30rpx;padding-left:28rpx;line-height:90rpx;padding-top:40rpx;}
+
+  // 底部
+  .fixed_bottom{position:fixed;left:0;bottom:0;background:#fff;height:80rpx;width:750rpx;border-top:2rpx solid #f2f2f2;}
+  .shopping_cart{width:100rpx;height:100rpx;border-radius:50%;background:#fff;float:left;margin-left:28rpx;line-height:96rpx;margin-top:-16rpx;text-align:center;border-top:2rpx solid #f2f2f2;}
   .shopping_cart image{width:88rpx;height:88rpx;}
   .add_cart{background:#CF1A2F;text-align:center;width:270rpx;height:80rpx;line-height:80rpx;font-size:34rpx;float:right;color:#faf5f5;}
 
@@ -50,7 +52,10 @@
     <view class='content'>
       <view class='title'>商品详情</view>
       <view class='main'>
-        <image src='{{bannerUrl}}' mode='widthFix' style='width:100%'></image>
+        <image src='../img/good_details2.jpg' mode='widthFix' style='width:100%'></image>
+        <image src='../img/good_details3.png' mode='widthFix' style='width:100%'></image>
+        <image src='../img/good_details4.jpg' mode='widthFix' style='width:100%'></image>
+        <image src='../img/good_details5.jpg' mode='widthFix' style='width:100%'></image>
       </view>
     </view> 
     <view class='fixed_bottom'>
@@ -111,100 +116,60 @@
     }
 
     data = {
-      bannerUrl: '../img/WX20180918-093429.png',
-      name: '圣多美和普林西比民主共和国圣多美和普林西特色面圣多美和普林西比',
-      price: 9999,
-      original_price: '8',
+      bannerUrl: '../img/wm2.jpg',
+      name: '巧克力榛子鲜奶千层蛋糕',
+      price: 158,
+      original_price: '198',
       sales: 236,
       id: 123,
       sku_list: [
         {
-          sku_title: '请选择颜色',
+          sku_title: '尺寸',
           sku_con: [
             {
               value: '11',
-              name: '黑色',
+              name: '8寸',
               checked: true,
               price: 10
             },
             {
               value: '12',
-              name: '黄色',
+              name: '10寸',
               checked: false,
               price: 18
             },
             {
               value: '13',
-              name: '红色',
+              name: '12寸',
               checked: false,
               price: 18
             },
             {
               value: '14',
-              name: '黄色',
+              name: '14寸',
               checked: false,
               price: 18
             },
             {
               value: '15',
-              name: '红色',
-              checked: false,
-              price: 18
-            },
-            {
-              value: '16',
-              name: '黄色',
-              checked: false,
-              price: 18
-            },
-            {
-              value: '17',
-              name: '红色',
+              name: '16寸',
               checked: false,
               price: 18
             }
           ]
         },
         {
-          sku_title: '请选择尺寸',
+          sku_title: '口味',
           sku_con: [
             {
               value: '18',
-              name: 'M',
+              name: '原味',
               checked: true
             },
             {
               value: '19',
-              name: 'XL',
+              name: '加芝士',
               checked: false
-            },
-            {
-              value: '20',
-              name: '2XL',
-              checked: false
-            }
-          ]
-        },
-        {
-          sku_title: '请选择颜色',
-          sku_con: [
-            {
-              value: '21',
-              name: '黑色',
-              checked: true,
-              price: 10
-            },
-            {
-              value: '22',
-              name: '黄色',
-              checked: false,
-              price: 18
-            },
-            {
-              value: '23',
-              name: '红色',
-              checked: false,
-              price: 18
             }
           ]
         }
@@ -229,7 +194,6 @@
           })
         } else {
           console.log('发送添加到购物车')
-          wepy.navigateBack({url: 'foodList'})
         }
       },
 
@@ -254,7 +218,6 @@
           animationData: animation.export()
         })
         this.mask = false
-        wepy.navigateBack({url: 'foodList'})
       },
       close () {
         var animation = wepy.createAnimation({

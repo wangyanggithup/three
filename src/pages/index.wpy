@@ -8,20 +8,19 @@
   .nav.navFixed{position:fixed;top:0;left:0;width:698rpx;height:45rpx;z-index:2}
   ::-webkit-scrollbar{display:none;}
   .nav view{-webkit-flex-shrink: 0;flex-shrink:0;padding:11rpx 0;text-align:center;height:26rpx;line-height:26rpx;}
-  .nav view text{margin:0 24rpx;color:#3e3d3d;}
+  .nav view text{margin:0 30rpx;color:#3e3d3d;}
   .nav .active text{color:#ec6273;border-bottom:6rpx solid #ec6273;}
   swiper{width:750rpx;height:360rpx;overflow:hidden}
   swiper navigator{height:100%;}
   .swiper-box .wx-swiper-dots.wx-swiper-dots-horizontal{margin-bottom:-7rpx;}
-  .swiper-box .wx-swiper-dot{width:16rpx;display:inline-flex;height:16rpx;margin:0 -2rpx;}
-  .swiper-box .wx-swiper-dot::before{
-      content: '';flex-grow: 1; background:#a79892;border-radius:8rpx}
-  .swiper-box .wx-swiper-dot-active::before{background:#fafdfc;}
+  .swiper-box .wx-swiper-dot{width:16rpx;height:16rpx;display:inline-flex;margin:0 -2rpx;background:0;}
+  .swiper-box .wx-swiper-dot::before{content: '';flex-grow: 1; background:rgba(255,255,255,0.6);border-radius:8rpx;}
+  .swiper-box .wx-swiper-dot-active::before{background:rgba(255,255,255,1);}
   .good_list{display: -webkit-box;display:-webkit-flex;display:flex;-webkit-flex-wrap:wrap;flex-wrap:wrap;-webkit-justify-content:space-between;justify-content:space-between;margin-top:30rpx;margin-bottom:40rpx;font-size:28rpx;}
   .good_list .good_item_out{position:relative;background:#fff;border-radius:20rpx;overflow:hidden;width:738rpx;margin:28rpx 0 0 12rpx;}
   .good_list .good_item_out navigator{overflow:hidden;}
-  .good_item_image{width:295rpx;height:289rpx;overflow:hidden;float:left;position:relative;border-radius:10rpx;}
-  .good_item_image .image_mask{position:absolute;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.6);text-align:center;line-height:292rpx;color:#fff;font-size:34rpx;}
+  .good_item_image{width:294rpx;height:294rpx;overflow:hidden;float:left;position:relative;border-radius:10rpx;}
+  .good_item_image .image_mask{position:absolute;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.6);text-align:center;line-height:294rpx;color:#fff;font-size:34rpx;}
   .good_item_info{float:left;overflow:hidden;width:376rpx;margin-left:32rpx;height:288rpx;position:relative;}
   .info_name{line-height:44rpx;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;height:88rpx;overflow:hidden;margin-top:16rpx;}
   .info_price{position:absolute;bottom:20rpx;left:0;}
@@ -31,11 +30,11 @@
   .good_item_out .number view{float:left;width:80rpx;height:80rpx;text-align:center;}
   .good_item_out .number view image{width:36rpx;height:36rpx;margin-top:22rpx;}
   .good_item_out .number text{float:left;font-size:32rpx;margin:18rpx 0 0;color:#6A6A6A}
-  .bottom_tip{font-size:28rpx;color:#949494;text-align:center;height:88rpx;line-height:88rpx}
+  .bottom_tip{font-size:28rpx;color:#d1d2d2;text-align:center;height:88rpx;line-height:88rpx}
   .shopping_cart{position:relative;position:fixed;bottom:80rpx;right:100rpx;}
   .shopping_cart image{width:100rpx;height:100rpx;}
   .shopping_cart .tip{position:absolute;right:6rpx;top:6rpx;background:#d51d35;border-radius:50%;overflow:hidden;color:#ebacb1;font-size:22rpx;min-width:26rpx;text-align:center;padding:2rpx;line-height:26rpx;}
-  .fixed_bottom_tip{width:750rpx;height:40rpx;background:#F0F0F0;color:#d1d2d2;text-align:center;font-size:20rpx;position:fixed;bottom:0;left:0;line-height:40rpx;}
+  .fixed_bottom_tip{width:750rpx;height:40rpx;background:#F0F0F0;color:#949494;text-align:center;font-size:20rpx;position:fixed;bottom:0;left:0;line-height:40rpx;}
   
   .mask{position:fixed;bottom:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.3);}
   .choose_sku{position:fixed;bottom:0;width:750rpx;box-sizing:border-box;left:0;background:#fff;transform:translate(0,100%);overflow:hidden;z-index:2}
@@ -190,212 +189,128 @@
       nav_list: [
         {
           id: '111',
-          text: '推荐',
+          text: '外卖',
           active: true
         },
         {
           id: '222',
-          text: '特价',
+          text: '甜面包',
           active: false
         },
         {
           id: '333',
-          text: '优惠券',
+          text: '起酥',
           active: false
         },
         {
           id: '555',
-          text: '甜品',
+          text: '甜甜圈',
           active: false
         },
         {
           id: '666',
-          text: '烘焙',
+          text: '欧式',
           active: false
         },
         {
           id: '77',
-          text: '饮品',
+          text: '三明治',
+          active: false
+        },
+        {
+          id: '88',
+          text: '切片蛋糕',
+          active: false
+        },
+        {
+          id: '99',
+          text: '花式面包',
+          active: false
+        },
+        {
+          id: '10',
+          text: '曲奇饼干',
           active: false
         }
       ],
       banner_list: [
         {
-          url: 'map_demo',
+          url: 'foodDetails?stock_number=3',
           src: '../img/161849782.jpg'
         },
         {
-          url: 'selectCity',
-          src: '../img/sa20131113000000005.jpg'
-        },
-        {
-          url: '',
-          src: '../img/vd0G-fykymue7319133.jpg'
+          url: 'foodDetails?stock_number=0',
+          src: '../img/161849783.jpg'
         }
       ],
       good_list: [
         {
           id: 111111111111,
           url: 'foodDetails?stock_number=0',
-          src: '../img/WX20180915-145327.png',
-          name: '4支阿方索芒果甜甜圈/双旋冰淇淋甜甜圈',
+          src: '../img/wm1.jpg',
+          name: '手工烘焙黄油曲奇夹心小蛋糕',
           price: '20.00',
           original_price: '30.00',
           computed_number: 0,
-          sku: [],
+          sku_list: [],
           disabled: '',
           stock_number: 0
         },
         {
           id: 22222222222222,
           url: 'foodDetails?stock_number=1',
-          src: '../img/WX20180915-145350.png',
-          name: '老北京鸡肉卷九珍蛋糕/老北京鸡肉蛋糕1个/九珍果汁',
+          src: '../img/wm2.jpg',
+          name: '可可芝士双层乳酪蛋糕',
           price: '200',
           original_price: '50',
           computed_number: 0,
-          sku: [
+          sku_list: [
             {
-              sku_title: '请选择颜色',
+              sku_title: '尺寸',
               sku_con: [
                 {
                   value: '11',
-                  name: '黑色',
+                  name: '8寸',
                   checked: true,
                   price: 10
                 },
                 {
                   value: '12',
-                  name: '黄色',
+                  name: '10寸',
                   checked: false,
                   price: 18
                 },
                 {
                   value: '13',
-                  name: '红色',
+                  name: '12寸',
                   checked: false,
                   price: 18
                 },
                 {
                   value: '14',
-                  name: '黄色',
+                  name: '14寸',
                   checked: false,
                   price: 18
                 },
                 {
                   value: '15',
-                  name: '红色',
-                  checked: false,
-                  price: 18
-                },
-                {
-                  value: '16',
-                  name: '黄色',
-                  checked: false,
-                  price: 18
-                },
-                {
-                  value: '17',
-                  name: '红色',
+                  name: '16寸',
                   checked: false,
                   price: 18
                 }
               ]
             },
             {
-              sku_title: '请选择尺寸',
+              sku_title: '口味',
               sku_con: [
                 {
                   value: '18',
-                  name: 'M',
+                  name: '原味',
                   checked: true
                 },
                 {
                   value: '19',
-                  name: 'XL',
-                  checked: false
-                },
-                {
-                  value: '20',
-                  name: '2XL',
-                  checked: false
-                }
-              ]
-            },
-            {
-              sku_title: '请选择颜色',
-              sku_con: [
-                {
-                  value: '21',
-                  name: '黑色',
-                  checked: true,
-                  price: 10
-                },
-                {
-                  value: '22',
-                  name: '黄色',
-                  checked: false,
-                  price: 18
-                },
-                {
-                  value: '23',
-                  name: '红色',
-                  checked: false,
-                  price: 18
-                }
-              ]
-            }
-          ],
-          disabled: '',
-          stock_number: 1
-        },
-        {
-          id: 33333333333333,
-          url: 'foodDetails?stock_number=2',
-          src: '../img/WX20180915-145350.png',
-          name: '老北京鸡肉卷九珍蛋糕/老北京鸡肉蛋糕1个/九珍果汁九珍果汁',
-          price: '36',
-          original_price: '50',
-          computed_number: 0,
-          sku: '',
-          disabled: '',
-          stock_number: 2
-        },
-        {
-          id: 44444444444444,
-          url: 'foodDetails?stock_number=3',
-          src: '../img/WX20180915-145327.png',
-          name: '老北京鸡肉卷九珍蛋糕',
-          price: '36',
-          original_price: '',
-          computed_number: 0,
-          sku: [
-            {
-              sku_title: '是否加冰333',
-              sku_con: [
-                {
-                  value: '24',
-                  name: '是',
-                  checked: true
-                },
-                {
-                  value: '25',
-                  name: '否',
-                  checked: false
-                }
-              ]
-            },
-            {
-              sku_title: '是否加糖444',
-              sku_con: [
-                {
-                  value: '25',
-                  name: '是',
-                  checked: true
-                },
-                {
-                  value: '1010',
-                  name: '否',
+                  name: '加芝士',
                   checked: false
                 }
               ]
@@ -403,6 +318,18 @@
           ],
           disabled: '',
           stock_number: 3
+        },
+        {
+          id: 33333333333333,
+          url: 'foodDetails?stock_number=2',
+          src: '../img/wm3.jpg',
+          name: '奶油巧克力芝士蛋糕',
+          price: '36',
+          original_price: '50',
+          computed_number: 0,
+          sku_list: '',
+          disabled: '',
+          stock_number: 2
         }
       ],
       bottom_tip: '上滑加载更多',
@@ -411,31 +338,51 @@
       choose_price: '',
       sku_list: [
         {
-          sku_title: '是否加冰',
+          sku_title: '尺寸',
           sku_con: [
             {
-              value: '111',
-              name: '是',
-              checked: true
+              value: '11',
+              name: '8寸',
+              checked: true,
+              price: 10
             },
             {
-              value: '222',
-              name: '否',
-              checked: false
+              value: '12',
+              name: '10寸',
+              checked: false,
+              price: 18
+            },
+            {
+              value: '13',
+              name: '12寸',
+              checked: false,
+              price: 18
+            },
+            {
+              value: '14',
+              name: '14寸',
+              checked: false,
+              price: 18
+            },
+            {
+              value: '15',
+              name: '16寸',
+              checked: false,
+              price: 18
             }
           ]
         },
         {
-          sku_title: '是否加糖',
+          sku_title: '口味',
           sku_con: [
             {
-              value: '111',
-              name: '是',
+              value: '18',
+              name: '原味',
               checked: true
             },
             {
-              value: '222',
-              name: '否',
+              value: '19',
+              name: '加芝士',
               checked: false
             }
           ]
@@ -487,7 +434,7 @@
       },
       subtract(e) {
         var index = e.currentTarget.dataset.index
-        if (this.good_list[index].sku.length > 0) {
+        if (this.good_list[index].sku_list.length > 0) {
           this.good_list[index].disabled = true
           wepy.showToast({
             title: '多规格以及带属性商品只能去购物车删除哦',
@@ -504,7 +451,7 @@
       },
       add(e) {
         var index = e.currentTarget.dataset.index
-        if (this.good_list[index].sku.length > 0) {
+        if (this.good_list[index].sku_list.length > 0) {
           this.good_list[index].disabled = true
           this.bounce(index)
           return
@@ -611,7 +558,7 @@
       this.choose_id = this.good_list[index].id
       this.choose_name = this.good_list[index].name
       this.choose_price = this.good_list[index].price
-      this.sku_list = this.good_list[index].sku
+      this.sku_list = this.good_list[index].sku_list
       var animation = wepy.createAnimation({
         duration: 500,
         timingFunction: 'ease'

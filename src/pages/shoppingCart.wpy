@@ -6,8 +6,8 @@
   .left_image{width:148rpx;height:148rpx;float:left;}
   .right_info{float:left;width:520rpx;height:148rpx;margin-left:20rpx;font-size:28rpx;position:relative;}
   .right_info .name{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;margin-bottom:6rpx;}
-  .right_info .sku{color:#8E8E8E;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  .right_info .price{color:#FF3737;font-size:30rpx;margin-top:20rpx;}
+  .right_info .sku{color:#8E8E8E;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:26rpx;}
+  .right_info .price{color:#FF3737;margin-top:20rpx;}
   .right_info .number{position:absolute;right:-20rpx;top:76rpx;}
   .right_info .number view{float:left;width:80rpx;height:80rpx;text-align:center;}
   .right_info .number view image{width:44rpx;height:44rpx;margin-top:18rpx;}
@@ -73,7 +73,7 @@
   export default class shoppingCart extends wepy.page {
     config = {
       navigationBarTitleText: '购物车',
-      navigationBarBackgroundColor: '#F0F0F0',
+      navigationBarBackgroundColor: '#fff',
       navigationBarTextStyle: 'black'
     }
 
@@ -84,25 +84,25 @@
       order_list: [
         {
           id: 111111111111,
-          src: '../img/WX20180915-145327.png',
-          name: '韩版宽松百搭夏季学生',
-          sku: ['颜色：白色'],
+          src: '../img/wm1.jpg',
+          name: '手工烘焙黄油曲奇夹心小蛋糕',
+          sku: '尺寸：8寸 口味：加芝士',
           price: '20',
           number: 1
         },
         {
           id: 111111111112,
-          src: '../img/WX20180915-145327.png',
-          name: '韩版宽松百搭夏季学生韩版宽松百搭夏季学生韩版宽松百搭夏季学生',
-          sku: ['颜色：白色 容量：400ml 温度：常温'],
+          src: '../img/wm2.jpg',
+          name: '可可芝士双层乳酪蛋糕',
+          sku: '尺寸：8寸 口味：加芝士',
           price: '30',
           number: 1
         },
         {
           id: 111111111113,
-          src: '../img/WX20180915-145327.png',
-          name: '韩版宽松百搭夏季学生',
-          sku: ['颜色：白色 容量：400ml 温度：常温 口味：橙子'],
+          src: '../img/wm3.jpg',
+          name: '奶油巧克力芝士蛋糕',
+          sku: '尺寸：8寸 口味：加芝士',
           price: '40',
           number: 1
         }

@@ -103,7 +103,7 @@
     }
     data = {
       grade: 'F R E S H',
-      integral: '1000',
+      integral: '',
       unpaidnum: 1,
       undelivernum: 5,
       userInfo: {avatarUrl: '../img/1536119946389.jpg'},
@@ -155,6 +155,10 @@
           }
         }
       })
+    }
+
+    onShow () {
+      this.integral = this.$parent.globalData.selected_membership_card.integral
     }
   }
 </script>

@@ -38,7 +38,7 @@
     <form bindsubmit="formSubmit">
       <view class='order_info'>
         <view class='left_image'>
-          <image src='{{src}}' />
+          <image src='{{src}}' mode='aspectFill'/>
         </view>
         <view class='right_info'>
           <view class='name'>{{good_name}}</view>
@@ -108,9 +108,9 @@
     data = {
       id: 123,
       url: '',
-      src: '../img/WX20180915-145327.png',
-      good_name: '夏洛特草莓蛋糕',
-      sku: '口味：水蜜桃 规格：箱',
+      src: '../img/1536119946389.jpg',
+      good_name: '巧克力榛子鲜奶千层蛋糕',
+      sku: '尺寸：8寸 口味：加芝士',
       good_integral: 500,
       good_money: 35,
       totalnumber: 3,

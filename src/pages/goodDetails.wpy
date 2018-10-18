@@ -1,14 +1,18 @@
 <style lang="less">
-  page{padding-bottom:100rpx;}
+  page{padding-bottom:80rpx;}
   .banner{width:750rpx;}
   .banner image{width:750rpx;}
-  .good_info{border-radius:12rpx;overflow:hidden;font-size:32rpx;padding:20rpx 14rpx 0;}
-  .good_info .info_price{line-height:80rpx;display:-webkit-box;display:-webkit-flex;display:flex;-webkit-justify-content:space-between;justify-content:space-between;padding-right:20rpx;}
-  .good_info .info_price .now{color:rgb(250,18,71);margin-right:30rpx;}
-  .good_info .info_price .sales_volume{font-size:28rpx;color:#8e8e8e;}
-  .good_info .info_price .original{color:rgb(142,142,142);text-decoration:line-through;font-size:28rpx;color:rgb(142,142,142);}
-  .content{width:720rpx;margin:0 auto;background:#eee;padding:10rpx 0;}
-  .buy{position:fixed;left:0;bottom:0;background:#C5C5C5;text-align:center;width:750rpx;height:80rpx;line-height:80rpx;font-size:34rpx;}
+  .good_info{font-size:30rpx;padding:10rpx 22rpx 0 28rpx;background:#fff;}
+  .good_info .info_name{line-height:46rpx;}
+  .good_info .info_price{line-height:70rpx;display: -webkit-box;display:-webkit-flex;display:flex;-webkit-justify-content:space-between;justify-content:space-between;}
+  .good_info .info_price .now{color:#FA1247;font-size:36rpx;}
+  .good_info .info_price .original{text-decoration:line-through;font-size:28rpx;color:#8E8E8E;-webkit-flex:1;flex:1;margin-left:16rpx;}
+  .good_info .info_price .sales{color:#707070;font-size:28rpx;}
+  .content{background:#fff;}
+  .content .title{font-size:30rpx;padding-left:28rpx;line-height:90rpx;padding-top:40rpx;}
+
+  // 底部
+  .buy{position:fixed;left:0;bottom:0;background:#C5C5C5;text-align:center;width:750rpx;height:80rpx;line-height:80rpx;font-size:34rpx;color:#fff;}
   
    .mask{position:fixed;bottom:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.3);}
   .choose_sku{position:fixed;bottom:0;width:750rpx;box-sizing:border-box;left:0;background:#fff;transform:translate(0,100%);overflow:hidden;z-index:2}
@@ -37,17 +41,25 @@
       <image src='{{bannerUrl}}' mode='widthFix'></image>
     </view>
     <view class='good_info'>
-      <view class='info_name'>{{name}}</view>
       <view class='info_price'>
-        <text class='now'>{{good_integral}}积分+{{good_money}}元</text>
-        <text class='sales_volume'>月销{{sales_volume}}笔</text>
-        <text class='original'>{{original_price}}</text>
+        <text class='now'>¥ {{price}}</text>
+        <text class='original'>¥{{original_price}}</text>
+        <text class='sales'>销量: {{sales}}</text>
       </view>
+      <view class='info_name'>{{name}}</view>
     </view>
-    <view class='content'>商品详情富文本</view> 
+    <view class='content'>
+      <view class='title'>商品详情</view>
+      <view class='main'>
+        <image src='../img/good_details2.jpg' mode='widthFix' style='width:100%'></image>
+        <image src='../img/good_details3.png' mode='widthFix' style='width:100%'></image>
+        <image src='../img/good_details4.jpg' mode='widthFix' style='width:100%'></image>
+        <image src='../img/good_details5.jpg' mode='widthFix' style='width:100%'></image>
+      </view>
+    </view> 
     <view class='money_bottom'>
       <form bindsubmit="formSubmit">
-        <view class='buy' @tap='choose' wx:if='{{stock_number}}'>立即购买</view>
+        <view class='buy' @tap='choose' wx:if='{{stock_number}}' style="background:#E23A38">立即购买</view>
         <view class='buy' @tap='stock_tip' wx:if='{{!stock_number}}'>已售完</view>
         <view class='mask' @tap='close' style="display:{{mask?'block':'none'}}"></view>
         <view class='choose_sku' animation="{{animationData}}">
@@ -100,80 +112,64 @@
     }
 
     data = {
-      bannerUrl: '../img/1536119946389.jpg',
-      name: '韩版宽松百搭夏季学生',
-      original_price: '50元',
-      sales_volume: 50,
+      bannerUrl: '../img/good_details1.jpg',
+      name: '巧克力榛子鲜奶千层蛋糕',
+      price: 158,
+      original_price: '198',
+      sales: 236,
+      id: 123,
       sku_list: [
         {
-          sku_title: '请选择颜色',
+          sku_title: '尺寸',
           sku_con: [
             {
               value: '11',
-              name: '黑色',
+              name: '8寸',
               checked: true,
               price: 10
             },
             {
               value: '12',
-              name: '黄色',
+              name: '10寸',
               checked: false,
               price: 18
             },
             {
               value: '13',
-              name: '红色',
+              name: '12寸',
               checked: false,
               price: 18
             },
             {
               value: '14',
-              name: '黄色',
+              name: '14寸',
               checked: false,
               price: 18
             },
             {
               value: '15',
-              name: '红色',
-              checked: false,
-              price: 18
-            },
-            {
-              value: '16',
-              name: '黄色',
-              checked: false,
-              price: 18
-            },
-            {
-              value: '17',
-              name: '红色',
+              name: '16寸',
               checked: false,
               price: 18
             }
           ]
         },
         {
-          sku_title: '请选择尺寸',
+          sku_title: '口味',
           sku_con: [
             {
               value: '18',
-              name: 'M',
+              name: '原味',
               checked: true
             },
             {
               value: '19',
-              name: 'XL',
-              checked: false
-            },
-            {
-              value: '20',
-              name: '2XL',
+              name: '加芝士',
               checked: false
             }
           ]
         }
       ],
-      id: 123,
       stock_number: '',
       good_integral: 500,
       good_money: 36,
@@ -262,21 +258,23 @@
     compute() {
       this.computed_integral = this.good_integral * this.computed_number
       this.computed_money = this.good_money * this.computed_number
+      console.log(this.computed_integral)
+      console.log(this.myintegral)
       if (this.computed_integral > this.myintegral) {
+        console.log('积分不足')
         this.integral_enough = false
         this.submit_text = '积分不足'
       } else {
+        console.log('积分足')
         this.integral_enough = true
         this.submit_text = '确定'
       }
+      console.log(this.computed_number)
+      console.log(this.stock_number)
       if (this.computed_number > this.stock_number) {
         this.integral_enough = false
         this.submit_text = '库存不足'
-      } else if (this.computed_number >= this.stock_number && this.computed_integral <= this.myintegral) {
-        this.integral_enough = true
-        this.submit_text = '确定'
       }
-      console.log(this.computed_integral)
     }
 
     onLoad(options) {

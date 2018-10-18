@@ -8,8 +8,8 @@ page{padding-bottom:100rpx;}
 .current view{color:#5B9ACB;font-size:28rpx;}
 .current image {width:40rpx;height:40rpx;margin-top:-4rpx;margin-right:2rpx;}
 .item {padding: 10px;display: flex;flex-direction: column;border-bottom: 1px solid #eee;}
-.item .title {width: 100%;font-size:34rpx;line-height: 30px;color: #333;}
-.item .address {width: 100%;font-size:28rpx;line-height:46rx;color: #666;}
+.item .title {width: 100%;font-size:30rpx;color: #333;}
+.item .address {width: 100%;font-size:28rpx;line-height:46rpx;color: #666;}
 .grey_bar{width:750rpx;height:12rpx;background:#F4F3F4}
 .add{position:fixed;bottom:0;left:0;width:700rpx;height:90rpx;padding:0 25rpx;display: -webkit-box;display:-webkit-flex;display:flex;-webkit-justify-content:space-between;justify-content:space-between;-webkit-align-items:center;align-items:center;border-top:2rpx solid #E0E0E0;background:#fff;}
 .add view{color:#5B9ACB;font-size:30rpx;}

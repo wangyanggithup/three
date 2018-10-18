@@ -88,37 +88,56 @@ export default class extends wepy.app {
     address_list: [
       {
         id: 111,
-        name: '王天赐1',
+        name: '王晓红',
         phone: '15533989855',
-        address: '天海誉天下A区',
-        address_details: '20号楼2单元1201室',
+        address: '北京市丰台区马家堡西路翠林小区',
+        address_details: '3号楼2单元1503室',
         checked: true,
         distance: 120,
         disabled: false
       },
       {
         id: 222,
-        name: '王天赐2',
+        name: '王小丽',
         phone: '15533989855',
-        address: '华城绿洲',
-        address_details: '桥西区东三教街20号',
+        address: '北京市丰台区马家堡西路翠林小区',
+        address_details: '3号楼2单元1503室',
         checked: false,
         distance: 50,
         disabled: false
       },
       {
         id: 333,
-        name: '王天赐3',
+        name: '王小强',
         phone: '15533989855',
-        address: '天海誉天下B区',
-        address_details: '裕华区裕兴街道36号19号楼2单元1201室',
+        address: '北京市丰台区马家堡西路翠林小区',
+        address_details: '3号楼2单元1503室',
         checked: false,
         distance: 120,
         disabled: false
       }
     ],
     receiveAddress: {},
-    prescribed_scope: 10
+    prescribed_scope: 10,
+    membership_card_list: [
+      {
+        name: '乐活俱乐部（河北）',
+        integral: '500'
+      },
+      {
+        name: '乐活俱乐部（北京）',
+        integral: '500'
+      },
+      {
+        name: '乐活俱乐部（上海）',
+        integral: ''
+      },
+      {
+        name: '乐活俱乐部（福建）',
+        integral: ''
+      }
+    ],
+    selected_membership_card: {}
   }
   onLaunch() {
     that = this

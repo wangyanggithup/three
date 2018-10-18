@@ -1,23 +1,24 @@
 <style lang="less">
-  page{background:#EBEBEB;padding-bottom:8rpx;padding-top:70rpx;}
+  page{padding-top:90rpx;}
   image{width:100%;height:100%;}
-  .nav{display: -webkit-box;display:-webkit-flex;display:flex;font-size:30rpx;background:#fff;position:fixed;width:750rpx;height:70rpx;left:0;top:0;z-index:2;}
+  .nav{display: -webkit-box;display:-webkit-flex;display:flex;font-size:30rpx;position:fixed;width:750rpx;height:70rpx;left:0;top:0;z-index:2;background:#fff;}
   .nav view{height:70rpx;line-height:70rpx;flex:1;text-align:center;}
   .nav text{height:66rpx;display:inline-block;}
-  .nav .active{border-bottom:4rpx solid #C81539;}
-  .order_item{background:#fff;overflow:hidden;margin-top:8rpx;font-size:30rpx;width:660rpx;padding:0 30rpx 54rpx 60rpx;position:relative;}
-  .status{line-height:90rpx;display: -webkit-box;display:-webkit-flex;display:flex;-webkit-justify-content:space-between;justify-content:space-between;color:#8E8E8E;font-size:28rpx;}
-  .status .red{color:#C81539;}
+  .nav .active{border-bottom:4rpx solid #e31836;}
+  .order_item{overflow:hidden;font-size:28rpx;width:660rpx;padding:0 22rpx 54rpx 60rpx;position:relative;}
+  .status{line-height:90rpx;display: -webkit-box;display:-webkit-flex;display:flex;-webkit-justify-content:space-between;justify-content:space-between;color:#6b6b6b;font-size:28rpx;}
+  .status .red{color:#e31836;}
   .good_info navigator{overflow:hidden;}
   .good_info .good_img{float:left;width:190rpx;height:190rpx;}
   .good_con{float:left;width:450rpx;margin-left:20rpx;position:relative;}
   .good_con .good_name{font-size:30rpx;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
   .good_con .good_sku{color:#8e8e8e;font-size:26rpx;width:380rpx;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:10rpx;}
-  .good_con .good_price{color:#C81539;margin-top:30rpx;}
-  .good_con .good_number{position:absolute;right:0;top:0;line-height:140rpx}
-  .operate{position:absolute;bottom:22rpx;right:0;}
+  .good_con .good_price{color:#e31836;margin-top:30rpx;font-size:26rpx;}
+  .good_con .good_number{position:absolute;right:20rpx;top:0;line-height:140rpx}
+  .operate{position:absolute;bottom:22rpx;right:0;font-size:30rpx;}
   .operate view{display:inline-block;width:130rpx;border:2rpx solid #C5C5C5;border-radius:30rpx;text-align:center;line-height:46rpx;color:#666;margin-right:20rpx;}
-  .operate .receive{color:#C81539;width:160rpx;border:2rpx solid #C81539;}
+  .operate .receive{color:#C81539;width:160rpx;border:2rpx solid #e31836;}
+  .bottom_tip{font-size:28rpx;color:#d1d2d2;text-align:center;height:88rpx;line-height:88rpx}
 </style>
 <template>
   <view class="container">
@@ -48,15 +49,15 @@
           <view class='good_info'>
             <navigator url='{{item.url}}'>
               <view class='good_img'> 
-                <image src='{{item.src}}'></image>
+                <image src='{{item.src}}' mode='aspectFill'></image>
               </view>
               <view class='good_con'>
                 <view class='good_name'>{{item.name}}</view>
                 <view class='good_sku'>{{item.sku}}</view>
                 <view class='good_price'>
-                  <text wx:if='{{item.good_integral}}'>{{item.good_integral}}积分</text><text wx:if='{{item.good_integral && item.good_money}}'>+</text><text wx:if='{{item.good_money}}'>{{item.good_money}}元</text>
+                  <text wx:if='{{item.good_integral}}'>{{item.good_integral}}分</text><text wx:if='{{item.good_integral && item.good_money}}'>+</text><text wx:if='{{item.good_money}}'>¥{{item.good_money}}</text>
                 </view>
-                <view class='good_number'>X {{item.number}}</view>
+                <view class='good_number'>X{{item.number}}</view>
               </view>
             </navigator>
           </view>
@@ -68,6 +69,7 @@
         </view> 
       </repeat>
 	  </view>
+    <view class='bottom_tip'>{{bottom_tip}}</view>
   </view>         
 </template>
 
@@ -107,9 +109,9 @@
           order_number: '1233456789',
           status: 1,
           url: 'orderDetailsRealtopay',
-          src: '../img/1536119946389.jpg',
-          name: '水清颜蜗牛修护柔肤水',
-          sku: '口味：水蜜桃 规格：箱',
+          src: '../img/1536119946388.jpg',
+          name: '甜品杯草莓芝士水果蛋糕',
+          sku: '尺寸：8寸 口味：加芝士',
           good_integral: 500,
           good_money: 35,
           number: 2,
@@ -120,7 +122,7 @@
           status: 2,
           url: 'orderDetailsRealtodeliver',
           src: '../img/1536119946389.jpg',
-          name: '水清颜蜗牛修护柔肤水',
+          name: '巧克力榛子鲜奶千层蛋糕',
           sku: '',
           good_integral: 500,
           good_money: '',
@@ -131,9 +133,9 @@
           order_number: '1233456789',
           status: 3,
           url: 'orderDetailsRealdelivered',
-          src: '../img/1536119946389.jpg',
-          name: '水清颜蜗牛修护柔肤水水清颜蜗牛修护柔肤水',
-          sku: '口味：水蜜桃 规格：箱',
+          src: '../img/1536119946390.jpg',
+          name: '抹茶奥利奥芝士小蛋糕',
+          sku: '尺寸：8寸 口味：加芝士',
           good_integral: '500',
           good_money: 0,
           number: 2,
@@ -143,9 +145,9 @@
           order_number: '1233456789',
           status: 4,
           url: 'orderDetailsRealcompleted',
-          src: '../img/1536119946389.jpg',
-          name: '水清颜蜗牛修护柔肤水',
-          sku: '口味：水蜜桃 规格：箱',
+          src: '../img/1536119946391.jpg',
+          name: '抹茶慕斯千层夹心蛋糕',
+          sku: '尺寸：8寸 口味：加芝士',
           good_integral: '',
           good_money: 35,
           number: 2,
@@ -156,8 +158,8 @@
           status: 5,
           url: 'orderDetailsRealclose',
           src: '../img/1536119946389.jpg',
-          name: '水清颜蜗牛修护柔肤水水清颜蜗牛修护柔肤水',
-          sku: '口味：水蜜桃 规格：箱',
+          name: '巧克力榛子鲜奶千层蛋糕',
+          sku: '尺寸：8寸 口味：加芝士',
           good_integral: 0,
           good_money: 35,
           number: 2,
@@ -168,8 +170,8 @@
           status: 6,
           url: 'orderDetailsRealcanceled',
           src: '../img/1536119946389.jpg',
-          name: '水清颜蜗牛修护柔肤水',
-          sku: '口味：水蜜桃 规格：箱',
+          name: '巧克力榛子鲜奶千层蛋糕',
+          sku: '尺寸：8寸 口味：加芝士',
           good_integral: 500,
           good_money: 35,
           number: 2,
@@ -190,9 +192,9 @@
         {
           order_number: '1233456789',
           status: 10,
-          url: 'foodOrderDetailstopaid',
+          url: 'foodOrderDetailstopay',
           src: '../img/1536119946389.jpg',
-          name: '待支付的外卖订单详情',
+          name: '巧克力榛子鲜奶千层蛋糕',
           sku: '',
           good_integral: '',
           good_money: 35,
@@ -204,14 +206,15 @@
           status: 11,
           url: 'foodOrderDetails',
           src: '../img/1536119946389.jpg',
-          name: '外卖订单详情',
+          name: '巧克力榛子鲜奶千层蛋糕',
           sku: '',
           good_integral: '',
           good_money: 35,
           number: 1,
           order_id: '222'
         }
-      ]
+      ],
+      bottom_tip: '没有更多了'
     }
     methods = {
       category (e) {

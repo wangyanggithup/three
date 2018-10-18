@@ -1,14 +1,17 @@
 <style lang="less">
-  page{padding-bottom:100rpx;}
+  page{padding-bottom:80rpx;}
   .banner{width:750rpx;}
   .banner image{width:750rpx;}
-  .good_info{border-radius:12rpx;overflow:hidden;font-size:32rpx;padding:20rpx 14rpx 0;}
-  .good_info .info_price{line-height:80rpx;}
-  .good_info .info_price .now{color:rgb(250,18,71);margin-right:30rpx;}
-  .good_info .info_price .original{color:rgb(142,142,142);text-decoration:line-through;font-size:28rpx;color:rgb(142,142,142);}
-  .content{width:720rpx;margin:0 auto;background:#eee;padding:10rpx 0;}
+  .good_info{font-size:30rpx;padding:10rpx 22rpx 0 28rpx;background:#fff;}
+  .good_info .info_name{line-height:46rpx;}
+  .good_info .info_price{line-height:70rpx;display: -webkit-box;display:-webkit-flex;display:flex;-webkit-justify-content:space-between;justify-content:space-between;}
+  .good_info .info_price .now{color:#FA1247;font-size:36rpx;}
+  .good_info .info_price .original{text-decoration:line-through;font-size:28rpx;color:#8E8E8E;-webkit-flex:1;flex:1;margin-left:16rpx;}
+  .good_info .info_price .sales{color:#707070;font-size:28rpx;}
+  .content{background:#fff;}
+  .content .title{font-size:30rpx;padding-left:28rpx;line-height:90rpx;padding-top:40rpx;}
 
-  .bottom{position:fixed;left:0;bottom:0;background:#C5C5C5;text-align:center;width:750rpx;height:80rpx;line-height:80rpx;font-size:34rpx;}
+  .buy{position:fixed;left:0;bottom:0;background:#E23A38;text-align:center;width:750rpx;height:80rpx;line-height:80rpx;font-size:34rpx;color:#fff;}
 </style>
 <template>
   <view class="container">
@@ -16,19 +19,26 @@
       <image src='{{bannerUrl}}' mode='widthFix'></image>
     </view>
     <view class='good_info'>
-      <view class='info_name'>{{name}}</view>
       <view class='info_price'>
-        <text class='now'>{{good_integral}}积分+{{good_money}}元</text>
-        <text class='original'>{{original_price}}</text>
+        <text class='now'>¥ {{price}}</text>
+        <text class='original'>¥{{original_price}}</text>
+        <text class='sales'>销量: {{sales}}</text>
       </view>
+      <view class='info_name'>{{name}}</view>
     </view>
-    <view class='content'>商品详情富文本</view> 
-    <view class='bottom' wx:if='{{havemoney}}'>
-      <view class='buy' @tap='buy'>立即购买</view>
-    </view>
-    <view class='bottom' wx:if='{{onlyintegral}}'>
-      <button class='buy' @tap='buy'>立即兑换</button>
-    </view>
+    <view class='content'>
+      <view class='title'>商品详情</view>
+      <view class='main'>
+        <image src='../img/good_details2.jpg' mode='widthFix' style='width:100%'></image>
+        <image src='../img/good_details3.png' mode='widthFix' style='width:100%'></image>
+        <image src='../img/good_details4.jpg' mode='widthFix' style='width:100%'></image>
+        <image src='../img/good_details5.jpg' mode='widthFix' style='width:100%'></image>
+      </view>
+    </view> 
+
+    <view class='buy' wx:if='{{!onlyintegral}}' @tap='buy' style="background:{{integral_enough?'#E23A38':'#c5c5c5'}}">{{submit_text}}</view>
+    <button class='buy' wx:if='{{onlyintegral}}' @tap='buy' style="background:{{integral_enough?'#E23A38':'#c5c5c5'}}">{{submit_text}}</button>
+    <view class='buy' @tap='stock_tip' wx:if='{{!stock_number}}' style='background:#c5c5c5'>已售完</view>
   </view>
 </template>
 
@@ -42,19 +52,28 @@
     }
 
     data = {
-      bannerUrl: '../img/1536119946389.jpg',
-      name: '卡券卡券',
-      original_price: '50元',
+
+      bannerUrl: '../img/good_details1.jpg',
+      name: '巧克力榛子鲜奶千层蛋糕满减券',
+      price: 10,
+      original_price: '18',
+      sales: 236,
       id: 123,
-      havemoney: true,
-      onlyintegral: false,
+      onlyintegral: '',
       good_integral: 500,
       good_money: 36,
-      myintegral: 2500,
+      myintegral: 600,
       integral_enough: true,
-      submit_text: '确定'
+      submit_text: '',
+      stock_number: ''
     }
     methods = {
+      stock_tip () {
+        wepy.showToast({
+          title: '本商品已售完',
+          icon: 'none'
+        })
+      },
       buy () {
         if (!this.integral_enough) {
           return false
@@ -63,7 +82,19 @@
       }
     }
 
-    onLoad() {
+    onLoad(options) {
+      this.stock_number = parseInt(options.stock_number)
+      if (this.good_money) {
+        this.onlyintegral = false
+        this.submit_text = '立即购买'
+      } else {
+        this.onlyintegral = true
+        this.submit_text = '立即兑换'
+      }
+      if (this.good_integral > this.myintegral) {
+        this.integral_enough = false
+        this.submit_text = '积分不足'
+      }
     }
   }
 </script>

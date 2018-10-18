@@ -1,39 +1,39 @@
 <style lang="less">
-  page{font-size:30rpx;background-color:#EBEBEB;}
   image{width:100%;height:100%;}
   .top_state{background: -webkit-linear-gradient(left, #FF8502 , #FF4701); 
             background: -o-linear-gradient(right, #FF8502, #FF4701);
             background: -moz-linear-gradient(right, #FF8502, #FF4701); 
             background: linear-gradient(to right, #FF8502 , #FF4701);
-            line-height:120rpx;padding-left:34rpx;font-size:32rpx;color:#fff;}
-  .person_info{background:#fff;overflow: hidden;line-height:54rpx;font-size:26rpx;background:#fff;display: -webkit-box;display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;padding:20rpx 0;}
+            line-height:126rpx;padding-left:34rpx;font-size:30rpx;color:#fff;}
+  .person_info{overflow: hidden;line-height:54rpx;font-size:26rpx;display: -webkit-box;display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;padding:20rpx 0;}
   .person_info .icon_location{width:66rpx;-webkit-flex-shrink:0;flex-shrink:0;text-align:center;}
-  .person_info .icon_location image{width:30rpx;height:38rpx;}
-  .person_info .address{width:650rpx;line-height:40rpx;color:#8D8D8D}
-  .person_info .address text{margin-right:30rpx;}
-  .order_info{position:relative;}
-  .order_info>navigator{overflow:hidden;padding:12rpx 0 12rpx 12rpx;}
+  .person_info .icon_location image{width:32rpx;height:42rpx;}
+  .person_info .address{width:658rpx;line-height:40rpx;color:#8D8D8D}
+  .person_info .address .phone{float:right;}
+
+  // 商品
+  .order_info{position:relative;background:#fafafa;}
+  .order_info>navigator{overflow:hidden;padding:22rpx 0 64rpx 12rpx;}
   .left_image{width:170rpx;height:170rpx;float:left;}
-  .right_info{float:left;width:520rpx;height:170rpx;margin-left:30rpx;font-size:30rpx;position:relative;}
+  .right_info{float:left;width:520rpx;height:170rpx;margin-left:22rpx;font-size:28rpx;position:relative;}
   .right_info .name{margin-top:10rpx;overflow:hidden;text-overflow:ellipsis;margin-bottom:6rpx;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;width:450rpx;height:84rpx;}
   .right_info .sku{color:#8E8E8E;font-size:26rpx;width:450rpx;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
-  .right_info .price{-webkit-flex-shrink:0;flex-shrink:0;font-size:28rpx;}
+  .right_info .price{-webkit-flex-shrink:0;flex-shrink:0;font-size:26rpx;}
   .right_info .number{position:absolute;right:0;top:0;line-height:170rpx;color:#8E8E8E;}
   .order_info .refund{position:absolute;bottom:12rpx;right:22rpx;width:126rpx;height:40rpx;line-height:40rpx;border:2rpx solid #9F9F9F;background:#fff;text-align:center;color:#9F9F9F;border-radius:40rpx;}
-  .other_item{background:#fff;display:-webkit-box;display:-webkit-flex;display:flex;-webkit-justify-content:space-between;justify-content:space-between;line-height:52rpx;font-size:28rpx;padding:0 16rpx;}
-  .good_totalprice{padding-top:20rpx;}
-  .order_number{padding-top:10rpx;}
+
+  // 附加信息
+  .other_item{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-justify-content:space-between;justify-content:space-between;line-height:52rpx;font-size:26rpx;padding:0 28rpx 0 14rpx;line-height:50rpx;}
+  .good_totalprice{padding-top:24rpx;}
   .other_item .red{color:#f00}
   .other_item .grey{color:#6E6E6E;}
-  .message .grey{width:550rpx;-webkit-flex-shrink:0;flex-shrink:0;text-align:right;}
-  .total{font-size:28rpx;padding:0 16rpx;text-align:right;color:#f00;line-height:90rpx;margin-bottom:26rpx;background:#fff;}
-  .order_number{padding-top:10rpx;}
-  .express{padding-bottom:10rpx;}
-  .operate{overflow:hidden;padding-top:0rpx;position:fixed;bottom:0;left:0;width:718rpx;}
-  .contact{width:200rpx;height:60rpx;margin-left:10rpx;position:relative;font-size:28rpx;color:#6E6E6E;text-align:right;margin-top:16rpx;padding-bottom:6rpx;}
-  .contact image{width:50rpx;height:50rpx;margin-top:-3rpx;margin-right:20rpx;}
-  .contact button{position:absolute;top:0;left:0;opacity:0;width:200rpx;height:60rpx;}
-  .operate_right{margin-top:20rpx;margin-left:10rpx;}
+  .message .grey{width:550rpx;text-align:right;line-height:40rpx;padding:5rpx 0;}
+  .total{font-size:26rpx;padding:0 16rpx;text-align:right;color:#f00;line-height:90rpx;}
+
+  .operate{overflow:hidden;position:fixed;bottom:0;left:0;width:718rpx;line-height:auto;padding:10rpx 28rpx 20rpx 18rpx;}
+  .contact{position:relative;font-size:28rpx;color:#6E6E6E;text-align:right;padding-bottom:6rpx;}
+  .contact image{width:44rpx;height:44rpx;margin-top:-3rpx;margin-right:18rpx;}
+  .contact button{position:absolute;top:0;left:0;opacity:0;width:200rpx;height:44rpx;}
   .operate_right view{float:left;width:140rpx;height:42rpx;border:2rpx solid #9F9F9F;border-radius:50rpx;text-align:center;line-height:42rpx;margin:0 12rpx;color:#9F9F9F;}
 </style>
 <template>
@@ -44,22 +44,22 @@
       <view class="address">
         <view class="buyer">
           <text>收货人：{{consingee_name}}</text>
-          <text>{{consingee_phone}}</text>
+          <text class='phone'>{{consingee_phone}}</text>
         </view>
         <view class="address_info">
-          收货地址：{{consingee_address}}
+          地址：{{consingee_address}}
         </view>
       </view>
     </view>
     <view class='order_info'>
       <navigator url='{{url}}'>
         <view class='left_image'>
-          <image src='{{src}}' />
+          <image src='{{src}}' mode='aspectFill'/>
         </view>
         <view class='right_info'>
           <view class='name'>{{good_name}}</view>
           <view class='sku'>{{sku}}</view>
-          <view class='price'><text wx:if='{{good_integral}}'>{{good_integral}}积分</text><text wx:if='{{good_integral && good_money}}'>+</text><text wx:if='{{good_money}}'>{{good_money}}元</text></view>
+          <view class='price'><text wx:if='{{good_integral}}'>{{good_integral}}分</text><text wx:if='{{good_integral && good_money}}'>+</text><text wx:if='{{good_money}}'>¥{{good_money}}</text></view>
           <view class='number'>X{{number}}</view>
         </view>
       </navigator>
@@ -69,17 +69,17 @@
     </view>
     <view class='good_totalprice other_item'>
       <view>商品总价</view>
-      <view class='red'><text wx:if='{{good_integral}}'>{{good_integral*number}}积分</text><text wx:if='{{good_integral && good_money}}'>+</text><text wx:if='{{good_money}}'>{{good_money*number}}元</text></view>
+      <view class='red'><text wx:if='{{good_integral}}'>{{good_integral*number}}分</text><text wx:if='{{good_integral && good_money}}'>+</text><text wx:if='{{good_money}}'>¥{{good_money*number}}</text></view>
     </view>
     <view class='good_freight other_item'>
       <view>运费</view>
-      <view class='red'>{{good_freight}}元</view>
+      <view class='red'>¥{{good_freight}}</view>
     </view>
     <view class='message other_item'>
       <view>留言</view>
       <view class='grey'>{{massage}}</view>
     </view>
-    <view class='total'>合计：<text wx:if='{{good_integral}}'>{{good_integral*number}}积分</text><text wx:if='{{good_integral && good_money}}'>+</text><text wx:if='{{good_money}}'>{{good_money*number+good_freight}}元</text></view>
+    <view class='total'>合计：<text wx:if='{{good_integral}}'>{{good_integral*number}}分</text><text wx:if='{{good_integral && good_money}}'>+</text><text wx:if='{{good_money}}'>¥{{good_money*number+good_freight}}</text></view>
     <view class='order_number other_item'>
       <view>订单编号</view>
       <view class='grey'>{{order_number}}</view>
@@ -113,13 +113,13 @@
       navigationBarTextStyle: 'black'
     }
     data = {
-      consingee_name: '杨志超',
+      consingee_name: '王晓红',
       consingee_phone: '17612654521',
-      consingee_address: '河北省石家庄市裕华区裕兴街道天海誉天下C区20号楼2单元1201室',
+      consingee_address: '北京市丰台区马家堡西路翠林小区3号楼2单元1503室',
       url: 'goodDetails',
       src: '../img/1536119946389.jpg',
-      good_name: '韩版宽松百搭夏季学生短袖T恤衫',
-      sku: '口味：水蜜桃 规格：箱',
+      good_name: '巧克力榛子鲜奶千层蛋糕',
+      sku: '尺寸：8寸 口味：加芝士',
       good_integral: 500,
       good_money: 35,
       number: 2,

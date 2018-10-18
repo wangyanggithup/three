@@ -1,9 +1,8 @@
 <style lang="less">
   image{width:100%;height:100%}
-  page{font-size:30rpx;background-color:#f0f0f0;}
-  .order_info navigator{background:#f5f5f5;overflow:hidden;padding:20rpx 0;position:relative;border-bottom:2rpx solid #E0E0E0;}
+  .order_info navigator{background:#fafafa;overflow:hidden;padding:20rpx 0;position:relative;border-bottom:2rpx solid #E0E0E0;}
   .left_image{width:240rpx;height:240rpx;float:left;margin-left:20rpx;}
-  .right_info{float:left;width:420rpx;margin-left:24rpx;font-size:28rpx;}
+  .right_info{float:left;width:420rpx;margin-left:24rpx;font-size:30rpx;}
   .color{color:#8E8E8E;}
   .price{position:absolute;bottom:30rpx;width:420rpx;color:#8E8E8E;display: -webkit-box;display:-webkit-flex;display:flex;-webkit-justify-content:space-between;justify-content:space-between;}
   .price_con{color:#FF0001;font-size:30rpx;}
@@ -14,7 +13,7 @@
   .fixed label{float:right;width:60rpx;height:60rpx;}
   .fixed .label_icon{width:30rpx;height:30rpx;margin-top:-4rpx;vertical-align:middle;}
   .bottom{overflow:hidden;clear:both;}
-  .bottom .left{width:470rpx;background:#fff;float:left;text-align:right;padding:4rpx 30rpx 4rpx 0;line-height:40rpx;}
+  .bottom .left{width:470rpx;background:#eee;float:left;text-align:right;padding:4rpx 30rpx 4rpx 0;line-height:40rpx;}
   .bottom .left .needpay{font-size:30rpx;}
   .bottom .left .needpay_con{color:#FF3737;}
   .bottom .left .needpay_number{font-size:26rpx;color:#6E6E6E;}
@@ -29,9 +28,9 @@
             <image src='../img/1536119946389.jpg' />
           </view>
           <view class='right_info'>
-            <view class='name'>韩版宽松百搭夏季学生短袖T恤衫</view>
+            <view class='name'>巧克力榛子鲜奶千层蛋糕</view>
             <view class='price'>
-              <view class='price_con'>{{good_integral}}积分+{{good_money}}元</view>
+              <view class='price_con'>{{good_integral}}分+¥{{good_money}}</view>
               <view class='price_number'>X 1</view>
             </view>
           </view>
@@ -49,7 +48,11 @@
         </checkbox-group>
         <view class='bottom'>
           <view class='left'>
-            <view class='needpay'>应付：<text class='needpay_con'>{{good_integral}}积分+{{good_money}}元</text></view>
+            <view class='needpay'>应付：
+              <text class='needpay_con'>
+                <text wx:if='{{good_integral}}'>{{good_integral}}分</text><text wx:if='{{good_integral && good_money}}'>+</text><text wx:if='{{good_money}}'>¥{{good_money}}</text>
+              </text>
+            </view>
             <view class='needpay_number'>共计1件商品</view>
           </view>
           <button form-type='submit' class='submit' style="background:{{integral_enough?'#C50001':'#C5C5C5'}}">{{submit_text}}</button>
@@ -65,8 +68,8 @@
   export default class confirmOrderTicket extends wepy.page {
     config = {
       navigationBarTitleText: '确认订单',
-      navigationBarBackgroundColor: '#393A3F',
-      navigationBarTextStyle: 'white'
+      navigationBarBackgroundColor: '#fff',
+      navigationBarTextStyle: 'black'
     }
 
     data = {

@@ -99,8 +99,8 @@
     data = {
       refund_state: 3,
       src: '../img/1536119946389.jpg',
-      good_name: '韩版宽松百搭夏季学生短袖T恤衫',
-      sku: '口味：水蜜桃 规格：箱',
+      good_name: '巧克力榛子鲜奶千层蛋糕',
+      sku: '尺寸：8寸 口味：加芝士',
       good_integral: 500,
       good_money: '35',
       number: 2,

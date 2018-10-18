@@ -1,6 +1,6 @@
 <style lang="less">
   image{width:100%;height:100%}
-  page{font-size:30rpx;background:#fff;padding-bottom:160rpx;}
+  page{padding-bottom:160rpx;}
   .person_info navigator{background:#fff;overflow: hidden;line-height:54rpx;font-size:28rpx;margin-top:10rpx;}
   .person_info .buyer{margin-left: 110rpx;width:560rpx;line-height:70rpx;display: -webkit-box;display:-webkit-flex;display:flex;-webkit-justify-content:space-between;justify-content:space-between;}
   .address{display: -webkit-box;display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;padding-bottom:12rpx;}
@@ -14,8 +14,8 @@
   .order_info navigator{background:#F6F6F6;overflow:hidden;padding:20rpx 0;position:relative;}
   .left_image{width:240rpx;height:240rpx;float:left;margin-left:20rpx;}
   .right_info{float:left;width:420rpx;margin-left:24rpx;font-size:30rpx;}
-  .sku{color:#8E8E8E;}
-  .price{position:absolute;bottom:30rpx;width:420rpx;color:#8E8E8E;display: -webkit-box;display:-webkit-flex;display:flex;-webkit-justify-content:space-between;justify-content:space-between;}
+  .sku{color:#8E8E8E;font-size:28rpx;}
+  .price{position:absolute;bottom:30rpx;width:420rpx;color:#8E8E8E;display: -webkit-box;display:-webkit-flex;display:flex;-webkit-justify-content:space-between;justify-content:space-between;font-size:28rpx;}
   .price_con{color:#FF0001;font-size:30rpx;}
   .buy_number,.message,.freight{-webkit-align-items:center;align-items:center;border-bottom:2rpx solid #E4E4E4;background:#fff;display: -webkit-box;display:-webkit-flex;display:flex;-webkit-justify-content:space-between;justify-content:space-between;padding:15rpx 0;font-size:30rpx;}
   .buy_number_title,.message_title,.freight_title{margin-left:44rpx;}
@@ -69,10 +69,10 @@
             <image src='../img/1536119946389.jpg' />
           </view>
           <view class='right_info'>
-            <view class='name'>韩版宽松百搭夏季学生短袖T恤衫</view>
-            <view class='sku'>白色</view>
+            <view class='name'>巧克力榛子鲜奶千层蛋糕</view>
+            <view class='sku'>尺寸：8寸 口味：加芝士</view>
             <view class='price'>
-              <view class='price_con'>{{good_integral}}积分+{{good_money}}元</view>
+              <view class='price_con'>{{good_integral}}分+¥{{good_money}}</view>
               <view class='price_number'>X 1</view>
             </view>
           </view>

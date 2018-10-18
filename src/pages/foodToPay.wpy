@@ -15,7 +15,7 @@
     </view>
     <view class='operate'>
       <view class='item'>去支付</view>
-      <navigator class='item' url='foodOrderDetailstopaid'>查看订单</navigator>
+      <navigator class='item' url='foodOrderDetailstopay'>查看订单</navigator>
     </view>
   </view>
 </template>
@@ -25,8 +25,8 @@
   export default class foodToPay extends wepy.page {
     config = {
       navigationBarTitleText: '待支付',
-      navigationBarBackgroundColor: '#323337',
-      navigationBarTextStyle: 'white'
+      navigationBarBackgroundColor: '#fff',
+      navigationBarTextStyle: 'black'
     }
     data = {
       clock: '00:00',

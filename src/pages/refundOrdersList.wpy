@@ -7,13 +7,14 @@
   .good_info .good_img{float:left;width:188rpx;height:188rpx;}
   .good_con{float:left;width:500rpx;margin-left:20rpx;}
   .good_con .good_name{line-height:40rpx;font-size:30rpx;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;}
-  .good_con .good_sku{line-height:50rpx;color:#8e8e8e;font-size:26rpx;display: -webkit-box;display:-webkit-flex;display:flex;-webkit-justify-content:space-between;justify-content:space-between;width:470rpx;}
-  .good_con .good_sku .good_details{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .good_con .good_sku{line-height:36rpx;margin-top:8rpx;color:#8e8e8e;font-size:26rpx;display: -webkit-box;display:-webkit-flex;display:flex;-webkit-justify-content:space-between;justify-content:space-between;width:470rpx;}
+  .good_con .good_sku .good_details{width:400rpx;}
   .bottom{overflow:hidden;}
-  .state{line-height:60rpx;padding:0 26rpx;font-size:26rpx;color:#8E8E8E;float:left;}
+  .state{line-height:60rpx;padding:0 26rpx;font-size:26rpx;color:#8c8c8c;float:left;}
   .operate{float:right;margin-right:20rpx;font-size:26rpx;line-height:60rpx;}
   .operate navigator{color:#8e8e8e;display:inline-block;margin-right:6rpx;}
   .icon{width:14rpx;height:14rpx;border-top:2rpx solid rgb(180, 181, 182);border-right:2rpx solid rgb(180, 181, 182);display:inline-block;-webkit-transform:rotate(45deg);transform:rotate(45deg);margin-right:4rpx;}
+  .bottom_tip{font-size:28rpx;color:#d1d2d2;text-align:center;height:88rpx;line-height:88rpx}
 </style>
 <template>
   <view class='container'>
@@ -22,13 +23,13 @@
         <view class='order_item'>
           <view class='good_info'>
             <view class='good_img'> 
-              <image src='{{item.src}}'></image>
+              <image src='{{item.src}}' mode='aspectFill'></image>
             </view>
             <view class='good_con'>
               <view class='good_name'>{{item.name}}</view>
               <view class='good_sku'>
-                <view>{{item.sku}}</view>
-                <view>X {{item.number}}</view>
+                <view class='good_details'>{{item.sku}}</view>
+                <view>X{{item.number}}</view>
               </view>
             </view>
           </view>
@@ -47,6 +48,7 @@
         </view> 
       </repeat>
 	  </view>
+    <view class='bottom_tip'>{{bottom_tip}}</view>
   </view>         
 </template>
 
@@ -62,16 +64,16 @@
       order_list: [
         {
           url: 'refundDetails',
-          name: '水清颜蜗牛修护柔肤水',
+          name: '甜品杯草莓芝士水果蛋糕',
           order_state: 1,
-          src: '../img/1536119946389.jpg',
-          sku: '口味：水蜜桃 规格：箱',
+          src: '../img/1536119946388.jpg',
+          sku: '尺寸：8寸 口味：加芝士',
           order_id: '111',
           number: 1
         },
         {
-          url: '',
-          name: '咖啡券',
+          url: 'refundDetails',
+          name: '巧克力榛子鲜奶千层蛋糕',
           order_state: 2,
           src: '../img/1536119946389.jpg',
           sku: '',
@@ -79,24 +81,25 @@
           number: 2
         },
         {
-          url: '',
-          name: '水清颜蜗牛修护柔肤水水清颜蜗牛修护柔肤水颜蜗牛修护柔肤水水清颜蜗牛修护柔肤水',
+          url: 'refundDetails',
+          name: '抹茶奥利奥芝士小蛋糕',
           order_state: 3,
-          src: '../img/1536119946389.jpg',
-          sku: '口味：水蜜桃 规格：箱',
+          src: '../img/1536119946390.jpg',
+          sku: '尺寸：8寸 口味：加芝士',
           order_id: '333',
           number: 1
         },
         {
-          url: '',
-          name: '水清颜蜗牛修护柔肤水',
+          url: 'refundDetails',
+          name: '抹茶慕斯千层夹心蛋糕',
           order_state: 4,
           src: '../img/1536119946389.jpg',
-          sku: '口味：水蜜桃 规格：箱',
+          sku: '尺寸：8寸 口味：加芝士',
           order_id: '444',
           number: 1
         }
-      ]
+      ],
+      bottom_tip: '没有更多了'
     }
     methods = {
     }
